@@ -83,6 +83,7 @@ namespace Walker2.Controller
             Move();
             Jump();
             Crouch();
+            
         }
 
         private void LateUpdate()
@@ -140,7 +141,7 @@ namespace Walker2.Controller
             float mouseX = inputManager.Look.x;
             float mouseY = inputManager.Look.y;
 
-            camera.position = cameraRoot.position;
+            //camera.position = cameraRoot.position;
 
             xRotation -= mouseY * mouseSens * Time.smoothDeltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
@@ -179,8 +180,7 @@ namespace Walker2.Controller
 
         public void AddJumpForce()
         {
-            rb.velocity = Vector2.zero;
-            rb.AddForce(Vector3.up * jumpFactor, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, jumpFactor, rb.velocity.z);
             animator.ResetTrigger(jumpHash);        
         }
 
