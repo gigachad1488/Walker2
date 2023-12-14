@@ -141,7 +141,7 @@ namespace Walker2.Controller
             float mouseX = inputManager.Look.x;
             float mouseY = inputManager.Look.y;
 
-            //camera.position = cameraRoot.position;
+            camera.position = cameraRoot.position;
 
             xRotation -= mouseY * mouseSens * Time.smoothDeltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);

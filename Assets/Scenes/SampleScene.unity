@@ -388,13 +388,12 @@ Transform:
   m_GameObject: {fileID: 148063179}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.064281836, z: 0.014567297}
+  m_LocalPosition: {x: 0, y: 1.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 320909480}
   - {fileID: 330585546}
-  m_Father: {fileID: 652856819401013475}
+  m_Father: {fileID: 7847945745652156029}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &153111442
 GameObject:
@@ -522,8 +521,8 @@ MonoBehaviour:
     m_MaxLimit: 180
     m_AimAxis: 4
     m_UpAxis: 2
-    m_WorldUpType: 0
-    m_WorldUpObject: {fileID: 0}
+    m_WorldUpType: 3
+    m_WorldUpObject: {fileID: 148063180}
     m_WorldUpAxis: 2
     m_MaintainOffset: 0
     m_ConstrainedAxes:
@@ -555,11 +554,11 @@ Transform:
   m_GameObject: {fileID: 320909479}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 50}
+  m_LocalPosition: {x: 0, y: 0, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 148063180}
+  m_Father: {fileID: 330585546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
@@ -653,6 +652,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 320909480}
   - {fileID: 2048268483}
   - {fileID: 1673112660}
   m_Father: {fileID: 148063180}
@@ -708,12 +708,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf3d65d01193bf54c870567e26a4f960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  cam: {fileID: 330585546}
   recoilX: 0
   recoilY: 0
   recoilZ: 0
@@ -2503,7 +2503,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 148063180}
   - {fileID: 2978087210628621723}
   - {fileID: 5418563175561544753}
   - {fileID: 8138955607607775222}
@@ -4454,6 +4453,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 515753939}
+  - {fileID: 148063180}
   - {fileID: 3883090469741003439}
   - {fileID: 6424277917457430756}
   - {fileID: 153111444}
