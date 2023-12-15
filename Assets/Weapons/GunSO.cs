@@ -14,6 +14,11 @@ public class GunSO : ScriptableObject
     public Vector3 spawnRotation;
     public ShootConfigurationSO shootConfig;
     public TrailConfigurationSO trailConfig;
+    public DamageText damageTextPrefab;
+
+    public GameObject hitPrefab;
+    private ObjectPool<GameObject> hitPool;
+
     private MonoBehaviour activeMB;
     public GameObject model;
     private float lastShootTime;
@@ -25,7 +30,8 @@ public class GunSO : ScriptableObject
     {
         activeMB = activemb;
         lastShootTime = 0;
-        trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        //trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        hitPool = new ObjectPool<GameObject>(CreateHit);
         model = Instantiate(modelPrefab);
         model.transform.SetParent(parent, false);
         model.transform.localPosition = spawnPoint;
@@ -45,18 +51,34 @@ public class GunSO : ScriptableObject
             //Vector3 spreadAmount = shootConfig.GetSpread(0);
             Vector3 shootDirection = model.transform.parent.forward;
 
-            if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask)) 
+            if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask))
             {
-                activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
-            }
-            else
-            {
-                activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, shootSystem.transform.position + (shootDirection * trailConfig.missDistance), new RaycastHit()));
-            }
+                //GameObject hp = Instantiate(hitPrefab, hit.point, Quaternion.identity);
+                //Destroy(hp, 0.2f);
+
+                activeMB.StartCoroutine(PlayHit(hit.point));
+                
+                if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
+                {
+                    damagable.Damage(20);
+                    DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
+                    damageText.damage = 20;
+                }
+            }          
         }
+    } 
+
+    private IEnumerator PlayHit(Vector3 pos)
+    {
+        GameObject ht = hitPool.Get();
+        ht.SetActive(true);
+        ht.transform.position = pos;
+        yield return new WaitForSeconds(0.5f);
+        ht.SetActive(false);
+        hitPool.Release(ht);
     }
 
-    private IEnumerator PlayTrail(Vector3 startPoint, Vector3 endPoint, RaycastHit hit)
+    private IEnumerator PlayTrail(Vector3 startPoint, Vector3 endPoint)
     {
         TrailRenderer instance = trailPool.Get();
         instance.gameObject.SetActive(true);
@@ -85,6 +107,12 @@ public class GunSO : ScriptableObject
         instance.emitting = false;
         instance.gameObject.SetActive(false);
         trailPool.Release(instance);
+    }
+
+    private GameObject CreateHit()
+    {
+        GameObject hit = Instantiate(hitPrefab);
+        return hit;
     }
 
     private TrailRenderer CreateTrail()

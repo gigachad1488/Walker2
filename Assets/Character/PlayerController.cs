@@ -168,6 +168,7 @@ namespace Walker2.Controller
             {
                 isReadyToJump = false;
                 animator.SetTrigger(jumpHash);
+                JumpAddForce();
                 Invoke(nameof(JumpReset), 0.5f);
             }
         }
@@ -178,8 +179,9 @@ namespace Walker2.Controller
             isReadyToJump = true;
         }
 
-        public void AddJumpForce()
+        public void JumpAddForce()
         {
+            rb.velocity = Vector3.zero;
             rb.velocity = new Vector3(rb.velocity.x, jumpFactor, rb.velocity.z);
             animator.ResetTrigger(jumpHash);        
         }
@@ -190,8 +192,6 @@ namespace Walker2.Controller
             {
                 return;
             }
-
-            grounded = Physics.Raycast(rb.worldCenterOfMass, Vector3.down, distanceToGround, groundLayer);
 
             if (!grounded)
             {
@@ -207,13 +207,24 @@ namespace Walker2.Controller
             animator.SetBool(groundHash, grounded);
         }
 
-        private void OnDrawGizmos()
+        private void OnTriggerStay(Collider other)
         {
-            if (rb != null)
+            if ((groundLayer & 1 << other.gameObject.layer) == 1 << other.gameObject.layer)
             {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(rb.worldCenterOfMass, new Vector3(rb.worldCenterOfMass.x, rb.worldCenterOfMass.y - distanceToGround, rb.worldCenterOfMass.z));
+                grounded = true;
             }
+
+            //SampleGround();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if ((groundLayer & 1 << other.gameObject.layer) == 1 << other.gameObject.layer)
+            {
+                grounded = false;
+            }
+
+            //SampleGround();
         }
     }
 }

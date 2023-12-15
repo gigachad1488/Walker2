@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 65e9fbd0ab3fd724a911d688aaded88a
+timeCreated: 1492858913
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 88802
+  packageName: Plasma FX
+  packageVersion: 1.0
+  assetPath: Assets/Plasma FX/Shader/Particle AddAlphaBlended Mobile.shader
+  uploadId: 176716

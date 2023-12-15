@@ -20,4 +20,8 @@ MonoBehaviour:
   spawnRotation: {x: 0, y: 90, z: 0}
   shootConfig: {fileID: 11400000, guid: d27938e543ab0664f97625936b36d358, type: 2}
   trailConfig: {fileID: 11400000, guid: 7e974ec0e73ff5347aed5c8f0e8cf6ae, type: 2}
+  damageTextPrefab: {fileID: 5108297406719154002, guid: d7265f00ba081324687e64aa3d5d2a91,
+    type: 3}
+  hitPrefab: {fileID: 2613381002376653851, guid: 0e9e9b6a9aa5f8c45a39a0b49e202dce,
+    type: 3}
   model: {fileID: 0}
