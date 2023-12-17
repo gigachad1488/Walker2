@@ -112,7 +112,9 @@ namespace Walker2.Controller
             if (inputManager.Crouch)
             {
                 targetSpeed = crouchSpeed;
-            }           
+            }
+
+            targetSpeed *= StaticData.msBuffMult;
 
             if (inputManager.Move == Vector2.zero)
             {
@@ -182,7 +184,7 @@ namespace Walker2.Controller
         public void JumpAddForce()
         {
             rb.velocity = Vector3.zero;
-            rb.velocity = new Vector3(rb.velocity.x, jumpFactor, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, jumpFactor * StaticData.jumpBuffMult, rb.velocity.z);
             animator.ResetTrigger(jumpHash);        
         }
 

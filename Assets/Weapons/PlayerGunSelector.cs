@@ -14,14 +14,17 @@ public class PlayerGunSelector : MonoBehaviour
     [SerializeField]
     private List<GunSO> guns;
 
-    [SerializeField]
-    private TwoBoneIKConstraint leftHandConst;
-    [SerializeField]
-    private TwoBoneIKConstraint rightHandConst;
-    [SerializeField]
-    private RigBuilder builder;
+    public TwoBoneIKConstraint leftHandConst;
+    public TwoBoneIKConstraint rightHandConst;
+    public RigBuilder builder;
+
+    public WeaponIKGrips weaponIKGrips;
 
     public GunSO activeGun;
+    public Transform activeGunTransform;
+
+    public Vector3 initPos;
+    public Quaternion initRot;
 
     private void Start()
     {
@@ -34,7 +37,11 @@ public class PlayerGunSelector : MonoBehaviour
 
         activeGun = gun;
         gun.Spawn(gunParent, this);  
+        activeGunTransform = gun.model.transform;
+        initPos = activeGunTransform.localPosition;
+        initRot = activeGunTransform.localRotation;
         WeaponIKGrips grips = gun.model.GetComponent<WeaponIKGrips>();
+        weaponIKGrips = grips;
         leftHandConst.data.target = grips.leftHandGrip;
         rightHandConst.data.target= grips.rightHandGrip;
         builder.Build();

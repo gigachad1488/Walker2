@@ -9,6 +9,7 @@ public class GunSO : ScriptableObject
 {
     public GunType type;
     public string name;
+    public float damage;
     public GameObject modelPrefab;
     public Vector3 spawnPoint;
     public Vector3 spawnRotation;
@@ -60,9 +61,10 @@ public class GunSO : ScriptableObject
                 
                 if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
                 {
-                    damagable.Damage(20);
+                    float dmg = damage * StaticData.dmgBuffMult;
+                    damagable.Damage(dmg);
                     DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
-                    damageText.damage = 20;
+                    damageText.damage = dmg;
                 }
             }          
         }
