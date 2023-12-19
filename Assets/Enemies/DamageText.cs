@@ -36,7 +36,6 @@ public class DamageText : MonoBehaviour
             damageText.color = Color.yellow;
         }
 
-        //transform.DODynamicLookAt(Camera.main.transform.position, 0.5f);
         transform.DOBlendableLocalMoveBy(transform.up * 1.1f, 0.5f).SetEase(Ease.OutExpo).OnComplete(() => Destroy(gameObject));
     }
 }

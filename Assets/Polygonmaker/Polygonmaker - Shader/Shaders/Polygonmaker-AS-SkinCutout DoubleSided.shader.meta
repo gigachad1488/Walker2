@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b3e929332e0a8ae4880c782057e229b6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188776
+  packageName: Monsters - Killer
+  packageVersion: 1.2
+  assetPath: Assets/Polygonmaker/Polygonmaker - Shader/Shaders/Polygonmaker-AS-SkinCutout
+    DoubleSided.shader
+  uploadId: 589523

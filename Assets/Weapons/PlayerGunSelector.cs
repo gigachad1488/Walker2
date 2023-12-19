@@ -19,6 +19,7 @@ public class PlayerGunSelector : MonoBehaviour
     public TwoBoneIKConstraint rightHandConst;
     public TwoBoneIKConstraint reloadLeftHandConst;
     public TwoBoneIKConstraint reloadRightHandConst;
+    public TwoBoneIKConstraint abilityRightHandConst;
     public RigBuilder builder;
 
     public WeaponIKGrips weaponIKGrips;
@@ -50,6 +51,7 @@ public class PlayerGunSelector : MonoBehaviour
         rightHandConst.data.target= grips.rightHandGrip;
         reloadRightHandConst.data.target = grips.rightHandGrip;
         reloadLeftHandConst.data.target = reloadArm;
+        abilityRightHandConst.data.target = grips.rightHandGrip;
         builder.Build();    
         //reloadArm.localPosition = leftHandConst.data.target.localPosition;
     }

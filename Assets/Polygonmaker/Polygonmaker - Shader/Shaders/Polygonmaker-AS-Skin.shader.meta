@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0a80ced63300ac94caa0fdaccca6379c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188776
+  packageName: Monsters - Killer
+  packageVersion: 1.2
+  assetPath: Assets/Polygonmaker/Polygonmaker - Shader/Shaders/Polygonmaker-AS-Skin.shader
+  uploadId: 589523

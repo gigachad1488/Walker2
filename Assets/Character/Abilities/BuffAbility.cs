@@ -7,18 +7,51 @@ public class BuffAbility : MonoBehaviour, IAbility
 {
     private PlayerController player;
 
-    public float value;
-    public float duration;
-    public float cd;
+    [SerializeField]
+    private float value;
+    public float Value
+    {
+        get
+        {
+            return duration;
+        }
+    }
 
-    private bool canFire = false;
+    [SerializeField]
+    private float duration;
+    public float Duration
+    {
+        get
+        {
+            return duration;
+        }
+    }
+
+    [SerializeField]
+    private float cd;
+    public float Cd 
+    {
+        get
+        {
+            return cd;
+        }
+    }
+
+    [SerializeField]
+    private GameObject abilityParticles;
+    public GameObject AbilityParticles
+    {
+        get
+        {
+            return abilityParticles;
+        }
+    }
 
     private ParticleSystem buffParticles;
 
     private void Start()
     {
         buffParticles = GetComponentInChildren<ParticleSystem>();
-        canFire = true;
     }
 
     public void SetPlayer(PlayerController player)
@@ -28,18 +61,12 @@ public class BuffAbility : MonoBehaviour, IAbility
 
     public void Fire()
     {
-        if (canFire) 
-        {
-            Debug.Log("FRE");
-            canFire = false;
-            StartCoroutine(Cooldown());
-            buffParticles.Play();
-            StaticData.msBuffMult += value;
-            StaticData.msBuffMult += value;
-            StaticData.jumpBuffMult += value;
-            StaticData.dmgBuffMult += value;
-            StartCoroutine(DisableBuff());
-        }
+        buffParticles.Play();
+        StaticData.msBuffMult += value;
+        StaticData.msBuffMult += value;
+        StaticData.jumpBuffMult += value;
+        StaticData.dmgBuffMult += value;
+        StartCoroutine(DisableBuff());
     }
 
     private IEnumerator DisableBuff()
@@ -50,11 +77,5 @@ public class BuffAbility : MonoBehaviour, IAbility
         StaticData.jumpBuffMult -= value;
         StaticData.dmgBuffMult -= value;
         buffParticles.Stop();
-    }
-
-    private IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(cd);
-        canFire = true;
     }
 }

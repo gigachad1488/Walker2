@@ -113,6 +113,7 @@ public class GunSO : ScriptableObject
                 damagable.Damage(dmg);
                 DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
                 damageText.damage = dmg;
+                damageText.damageText.fontSize = hit.transform.localScale.x * 20;
             }
         }
     }
