@@ -149,9 +149,14 @@ public class PlayerAction : MonoBehaviour
         s.Join(DOVirtual.Float(0, 1, 0.2f, x => reloadRig.weight = x));
         s.Join(gunSelector.reloadArm.DOLocalMove(gunSelector.weaponIKGrips.magazine.transform.localPosition, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
         {
+            List<Vector3> p = new List<Vector3>();
+            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.08f, gunSelector.activeGunTransform.localPosition.z));
+            
             gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.reloadArm);
+            //gunSelector.activeGunTransform.DOLocalMove(p[0], 0.2f).SetEase(Ease.OutQuint);
             gunSelector.reloadArm.DOLocalMove(paths[0], 0.3f).SetEase(Ease.InQuint).OnComplete(() => gunSelector.reloadArm.DOLocalMove(paths[1], 0.4f).SetDelay(0.3f).OnComplete(() =>
             {
+                
                 gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform);
                 gunSelector.weaponIKGrips.magazineTransform.localPosition = magInitPos;
                 currentAmmo = maxAmmo;
