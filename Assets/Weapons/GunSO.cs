@@ -10,6 +10,7 @@ public class GunSO : ScriptableObject
     public GunType type;
     public string name;
     public float damage;
+    public int ammo;
     public GameObject modelPrefab;
     public Vector3 spawnPoint;
     public Vector3 spawnRotation;
@@ -26,12 +27,13 @@ public class GunSO : ScriptableObject
     private ParticleSystem shootSystem;
     private ObjectPool<TrailRenderer> trailPool;
     private ProceduralRecoil recoil;
+    private PlayerAction playerAction;
 
     public void Spawn(Transform parent, MonoBehaviour activemb)
     {
         activeMB = activemb;
         lastShootTime = 0;
-        //trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
         hitPool = new ObjectPool<GameObject>(CreateHit);
         model = Instantiate(modelPrefab);
         model.transform.SetParent(parent, false);
@@ -44,31 +46,23 @@ public class GunSO : ScriptableObject
 
     public void Shoot()
     {
-        if (Time.time > shootConfig.fireRate + lastShootTime)
+        shootSystem.Play();
+
+        //Vector3 spreadAmount = shootConfig.GetSpread(0);
+        Vector3 shootDirection = model.transform.parent.forward;
+
+        if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask))
         {
-            lastShootTime = Time.time;
-            shootSystem.Play();
-
-            //Vector3 spreadAmount = shootConfig.GetSpread(0);
-            Vector3 shootDirection = model.transform.parent.forward;
-
-            if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask))
-            {
-                //GameObject hp = Instantiate(hitPrefab, hit.point, Quaternion.identity);
-                //Destroy(hp, 0.2f);
-
-                activeMB.StartCoroutine(PlayHit(hit.point));
-                
-                if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
-                {
-                    float dmg = damage * StaticData.dmgBuffMult;
-                    damagable.Damage(dmg);
-                    DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
-                    damageText.damage = dmg;
-                }
-            }          
+            //GameObject hp = Instantiate(hitPrefab, hit.point, Quaternion.identity);
+            //Destroy(hp, 0.2f);
+            //
+            activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
         }
-    } 
+        else
+        {
+            activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, shootSystem.transform.position + (shootDirection * trailConfig.missDistance), new RaycastHit()));
+        }
+    }
 
     private IEnumerator PlayHit(Vector3 pos)
     {
@@ -80,7 +74,7 @@ public class GunSO : ScriptableObject
         hitPool.Release(ht);
     }
 
-    private IEnumerator PlayTrail(Vector3 startPoint, Vector3 endPoint)
+    private IEnumerator PlayTrail(Vector3 startPoint, Vector3 endPoint, RaycastHit hit)
     {
         TrailRenderer instance = trailPool.Get();
         instance.gameObject.SetActive(true);
@@ -94,7 +88,7 @@ public class GunSO : ScriptableObject
 
         while (remainingDistance > 0)
         {
-            instance.transform.position = Vector3.Lerp(startPoint, endPoint, Mathf.Clamp01(1 - (remainingDistance  / distance)));
+            instance.transform.position = Vector3.Lerp(startPoint, endPoint, Mathf.Clamp01(1 - (remainingDistance / distance)));
 
             remainingDistance -= trailConfig.simulationSpeed * Time.deltaTime;
 
@@ -109,6 +103,18 @@ public class GunSO : ScriptableObject
         instance.emitting = false;
         instance.gameObject.SetActive(false);
         trailPool.Release(instance);
+
+        if (hit.point != null && hit.collider != null)
+        {
+            activeMB.StartCoroutine(PlayHit(hit.point));
+            if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
+            {
+                float dmg = damage * StaticData.dmgBuffMult;
+                damagable.Damage(dmg);
+                DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
+                damageText.damage = dmg;
+            }
+        }
     }
 
     private GameObject CreateHit()

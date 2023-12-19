@@ -8,4 +8,5 @@ public class WeaponIKGrips : MonoBehaviour
     public Transform leftHandGrip;
     public Transform magazine;
     public Transform reloadDest;
+    public Transform magazineTransform;
 }

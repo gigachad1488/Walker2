@@ -8,6 +8,7 @@ public class ShootConfigurationSO : ScriptableObject
     public LayerMask hitMask;
     public Vector3 spread = new Vector3(0.1f, 0.1f, 0.1f);
     public float fireRate = 0.5f;
+    public float kickBack = 0.5f;
 
     public Vector3 GetSpread(float shootTime = 0)
     {

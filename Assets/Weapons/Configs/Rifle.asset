@@ -15,6 +15,7 @@ MonoBehaviour:
   type: 0
   name: Rifle
   damage: 20
+  ammo: 40
   modelPrefab: {fileID: 5937749602348232249, guid: 694a0575ac63ea54abedb6b4bd34f613,
     type: 3}
   spawnPoint: {x: 0.15, y: -0.138, z: 0.4045}
