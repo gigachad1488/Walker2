@@ -40,8 +40,6 @@ public class PlayerAction : MonoBehaviour
     private bool reloading = false;
     private float abilityCD;
     private float abilityTargetRig;
-    private float abilityHoldTime = 0;
-    private float abilityHoldAddTime = 0;
 
     private float lastShootTime = 0;
 
@@ -66,21 +64,16 @@ public class PlayerAction : MonoBehaviour
     {
         if (abilityCD <= 0 && !reloading)
         {
-            abilityHoldTime += abilityHoldAddTime;
             if (Input.GetKey(KeyCode.Q))
             {
-                abilityManager.ParticlesVisible(true);
-                abilityHoldAddTime = Time.deltaTime;
+                abilityManager.ShowAbilityIndicator();
                 abilityTargetRig = 1;
                 targetRig = 0;
                 recoil.aim = false;
             }
-            else if (abilityHoldTime > 0.4f)
+            else if (abilityRig.weight >= 0.9f)
             {
-                abilityManager.ParticlesVisible(false);
                 abilityTargetRig = 0;
-                abilityHoldTime = 0;
-                abilityHoldAddTime = 0;
                 abilityCD = abilityManager.cd;
                 abilityManager.FireAbility();
             }
@@ -145,27 +138,31 @@ public class PlayerAction : MonoBehaviour
         //paths.Add(gunSelector.weaponIKGrips.leftHandGrip.transform.localPosition);
 
         Sequence s = DOTween.Sequence(); //hell
-        s.Append(gunSelector.activeGunTransform.DOLocalMove(gunpaths[0], 1f).SetEase(Ease.OutQuint));
+        s.Append(gunSelector.activeGunTransform.DOLocalMove(gunpaths[0], 0.3f).SetEase(Ease.OutQuint));
         s.Join(DOVirtual.Float(0, 1, 0.2f, x => reloadRig.weight = x));
         s.Join(gunSelector.reloadArm.DOLocalMove(gunSelector.weaponIKGrips.magazine.transform.localPosition, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
         {
             List<Vector3> p = new List<Vector3>();
-            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.08f, gunSelector.activeGunTransform.localPosition.z));
-            
+            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.03f, gunSelector.activeGunTransform.localPosition.z));
+            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z));
+
             gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.reloadArm);
-            //gunSelector.activeGunTransform.DOLocalMove(p[0], 0.2f).SetEase(Ease.OutQuint);
+            gunSelector.activeGunTransform.DOLocalPath(p.ToArray(), 0.5f).SetDelay(0.1f).SetEase(Ease.OutCubic);
             gunSelector.reloadArm.DOLocalMove(paths[0], 0.3f).SetEase(Ease.InQuint).OnComplete(() => gunSelector.reloadArm.DOLocalMove(paths[1], 0.4f).SetDelay(0.3f).OnComplete(() =>
-            {
-                
+            {             
                 gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform);
                 gunSelector.weaponIKGrips.magazineTransform.localPosition = magInitPos;
                 currentAmmo = maxAmmo;
                 currentAmmoText.text = currentAmmo.ToString();
+                List<Vector3> pp = new List<Vector3>();
+                pp.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.015f, gunSelector.activeGunTransform.localPosition.z));
+                pp.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z));
+                gunSelector.activeGunTransform.DOLocalPath(pp.ToArray(), 0.2f).SetEase(Ease.OutCubic);
             }));
         }));
         
         s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(Quaternion.Euler(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), 0.8f).SetEase(Ease.OutQuint)).PrependInterval(0.1f);
-        s.AppendInterval(0.2f);
+        s.AppendInterval(0.6f);
         s.Append(gunSelector.activeGunTransform.DOLocalMove(gunpaths[1], 0.4f));
         s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(gunSelector.initRot, 0.4f).SetEase(Ease.OutQuad));
         s.Join(DOVirtual.Float(1, 0, 0.4f, x => reloadRig.weight = x));

@@ -5,10 +5,13 @@ using Walker2.Controller;
 
 public interface IAbility
 {
-    public void SetPlayer(PlayerController player)
+    public void SetPlayer(PlayerController player, Transform abilityHand, Canvas uiCanvas)
     { }
 
     public void Fire()
+    { }
+
+    public void ShowIndicator()
     { }
 
     public float Value { get; }
@@ -16,5 +19,5 @@ public interface IAbility
 
     public float Duration { get; }
     
-    public GameObject AbilityParticles { get; }
+    public GameObject AbilityParticlesPrefab { get; }
 }

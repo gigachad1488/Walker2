@@ -1253,13 +1253,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468143339}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.079, y: 0.1327, z: -0.0756}
+  m_LocalRotation: {x: 0.14884506, y: 0, z: 0, w: 0.98886055}
+  m_LocalPosition: {x: -0.0956, y: 0.142, z: 0.0348}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7635731469194588624}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.12, y: 0, z: 0}
 --- !u!1 &515753938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1477,9 +1477,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7847945745652156034}
-  abilityPrefab: {fileID: 2136565321911587884, guid: edb7f9bb978a211428591eb4033ad376,
+  abilityPrefab: {fileID: 1842523708540952032, guid: b2f224f47bd3deb4390bfd9597a79c8a,
     type: 3}
   abilityHand: {fileID: 2707581357197312885}
+  uiCanvas: {fileID: 78513945}
   cd: 0
 --- !u!1 &618417012
 GameObject:
@@ -2125,7 +2126,7 @@ Transform:
   m_GameObject: {fileID: 989576855}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0401, y: 0.091, z: -0.0312}
+  m_LocalPosition: {x: -0.0537, y: 0.096, z: 0.0606}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2535,13 +2536,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1330002080}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0704, y: 0.1009, z: -0.0755}
+  m_LocalRotation: {x: 0.09958023, y: 0, z: 0, w: 0.99502957}
+  m_LocalPosition: {x: -0.1007, y: 0.118, z: -0.0002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 296390720799251244}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.43, y: 0, z: 0}
 --- !u!114 &1330002082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3319,7 +3320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1869491624}
   - component: {fileID: 1869491625}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3609,13 +3610,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930106720}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.21686545, y: 0, z: 0, w: 0.97620153}
-  m_LocalPosition: {x: -0.193, y: 0.1899, z: -0.2565}
+  m_LocalRotation: {x: 0.14768618, y: -0.038305134, z: 0.034420025, w: 0.98769265}
+  m_LocalPosition: {x: -0.0433, y: 0.0418, z: -0.0008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1790220584086952409}
-  m_LocalEulerAnglesHint: {x: -25.05, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.12, y: -3.93, z: 3.4}
 --- !u!1 &1987643614
 GameObject:
   m_ObjectHideFlags: 0
@@ -3803,13 +3804,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027633884}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.063, y: 0.113, z: -0}
+  m_LocalRotation: {x: -0.8378381, y: -0.037215654, z: -0.026620748, w: 0.54399776}
+  m_LocalPosition: {x: 0.1818, y: 0.0545, z: 0.0766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4123127740228616060}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -114, y: -0.58, z: -4.71}
 --- !u!1 &2048268482
 GameObject:
   m_ObjectHideFlags: 0
@@ -5278,7 +5279,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
+  m_AnimatePhysics: 1
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -6332,7 +6333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa723c075db70814698dd59757b05f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimationBlendSpeed: 6
+  AnimationBlendSpeed: 4
   mouseSens: 25
   cameraRoot: {fileID: 2978087210628621723}
   camera: {fileID: 148063180}
