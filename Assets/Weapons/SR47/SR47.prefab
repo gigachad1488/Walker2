@@ -5106,6 +5106,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48948dfe9d76b07488dacd46a7955fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1324532256930180875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8296548599652292780}
+  - component: {fileID: 1084299453058544774}
+  m_Layer: 7
+  m_Name: ReloadAnimArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8296548599652292780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324532256930180875}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.32699516, y: 0.38315088, z: 0.58857733, w: 0.63233405}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6425738785473868931}
+  m_LocalEulerAnglesHint: {x: -59.8, y: 11.4, z: 79.31}
+--- !u!114 &1084299453058544774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324532256930180875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48948dfe9d76b07488dacd46a7955fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3555907405397220786
 GameObject:
   m_ObjectHideFlags: 0
@@ -5695,10 +5739,14 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}
       insertIndex: 0
+      addedObject: {fileID: 8296548599652292780}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
+        type: 3}
+      insertIndex: 1
       addedObject: {fileID: 1649088814554293983}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}
-      insertIndex: 8
+      insertIndex: 9
       addedObject: {fileID: 7160769468948087125}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}
@@ -5771,6 +5819,7 @@ MonoBehaviour:
   magazine: {fileID: 7590017139495149105}
   reloadDest: {fileID: 0}
   magazineTransform: {fileID: 3031340023042513088}
+  reloadAnimArm: {fileID: 8296548599652292780}
 --- !u!114 &1665013587078236773
 MonoBehaviour:
   m_ObjectHideFlags: 0

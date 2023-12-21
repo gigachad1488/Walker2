@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FireballUnit : MonoBehaviour
 {
-    public Vector3 direction;
     public float damage = 0;
     public float speed = 0;
     public float radius = 0;
@@ -15,20 +14,15 @@ public class FireballUnit : MonoBehaviour
 
     private Rigidbody rb;
 
-    private void Start()
-    {    
-        if (speed > 0)
-        {
-            rb = GetComponent<Rigidbody>();
-            GetComponent<Collider>().enabled = true;
-            rb.constraints = RigidbodyConstraints.None;
-            var m = GetComponent<ParticleSystem>().main;
-            m.prewarm = true;
-            var mm = explodeParticles.main;
-            mm.startSize = radius;
-            rb.velocity = direction * speed;
-            Invoke(nameof(Explode), maxFlightTime);
-        }
+    public void Fire(Vector3 direction)
+    {
+        rb = GetComponent<Rigidbody>();
+        GetComponent<Collider>().enabled = true;
+        rb.constraints = RigidbodyConstraints.None;
+        var mm = explodeParticles.main;
+        mm.startSize = radius;
+        rb.velocity = direction * speed;
+        Invoke(nameof(Explode), maxFlightTime);
     }
 
     private void Explode()

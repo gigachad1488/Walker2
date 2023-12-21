@@ -42,11 +42,11 @@ public class PlayerGunSelector : MonoBehaviour
         activeGun = gun;
         gun.Spawn(gunParent, this);  
         activeGunTransform = gun.model.transform;
-        reloadArm.SetParent(activeGunTransform, false);
         initPos = activeGunTransform.localPosition;
         initRot = activeGunTransform.localRotation;      
         WeaponIKGrips grips = gun.model.GetComponent<WeaponIKGrips>();
-        weaponIKGrips = grips;   
+        weaponIKGrips = grips;
+        reloadArm = grips.reloadAnimArm;
         leftHandConst.data.target = grips.leftHandGrip;
         rightHandConst.data.target= grips.rightHandGrip;
         reloadRightHandConst.data.target = grips.rightHandGrip;

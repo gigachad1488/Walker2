@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 15
   duration: 0
-  cd: 1
+  cd: 0.5
   abilityParticlesPrefab: {fileID: 174544582612277082, guid: f18c5cfdc0c9b834a9c6f7c6ad0c7bfb,
     type: 3}
   layers:

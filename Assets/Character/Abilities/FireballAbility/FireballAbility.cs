@@ -53,16 +53,13 @@ public class FireballAbility : MonoBehaviour, IAbility
     [SerializeField]
     private LayerMask layers;
 
-    private GameObject abilityParticlesGM;
-    private ParticleSystem abilityParticles;
+    private FireballUnit activeFireball;
+    private Transform abilityHand;
 
     public void SetPlayer(PlayerController player, Transform abilityHand, Canvas uiCanvas)
     {
         this.player = player;
-        abilityParticlesGM = Instantiate(AbilityParticlesPrefab, abilityHand);
-        abilityParticlesGM.transform.localPosition = new Vector3(-0.155f, 0.12f, 0);
-        abilityParticles = abilityParticlesGM.GetComponent<ParticleSystem>();
-        ParticlesVisible(false);
+        this.abilityHand = abilityHand;       
     }
 
     public void Fire()
@@ -70,7 +67,6 @@ public class FireballAbility : MonoBehaviour, IAbility
         Vector3 dir;
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
-        ParticlesVisible(false);
         if (Physics.Raycast(ray, out hit, 100, layers))
         {
             dir = hit.point;
@@ -79,32 +75,22 @@ public class FireballAbility : MonoBehaviour, IAbility
         {
             dir = ray.GetPoint(100);
         }
-
-        FireballUnit fireball = Instantiate(AbilityParticlesPrefab, abilityParticlesGM.transform.position, Quaternion.identity).GetComponent<FireballUnit>();
-        fireball.damage = value;
-        fireball.direction = (dir - abilityParticlesGM.transform.position).normalized;
-        fireball.radius = radius;
-        fireball.maxFlightTime = duration;
-        fireball.speed = speed;
+        activeFireball.transform.SetParent(null);
+        activeFireball.Fire((dir - activeFireball.transform.position).normalized);
+        activeFireball = null;
         //Invoke(nameof(DisableBuff), duration);
     }
 
     public void ShowIndicator()
     {
-        ParticlesVisible(true);
-    }
-
-    public void ParticlesVisible(bool visible)
-    {
-        if (visible)
+        if (activeFireball == null)
         {
-            abilityParticles.gameObject.SetActive(true);
-            //abilityParticles.Play();
-        }
-        else
-        {
-            //abilityParticles.Stop();
-            abilityParticles.gameObject.SetActive(false);
-        }
+            activeFireball = Instantiate(AbilityParticlesPrefab, abilityHand).GetComponent<FireballUnit>();
+            activeFireball.transform.localPosition = new Vector3(-0.155f, 0.12f, 0);
+            activeFireball.damage = value;
+            activeFireball.radius = radius;
+            activeFireball.maxFlightTime = duration;
+            activeFireball.speed = speed;       
+        }    
     }
 }
