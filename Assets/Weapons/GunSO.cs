@@ -64,12 +64,12 @@ public class GunSO : ScriptableObject
         }
     }
 
-    private IEnumerator PlayHit(Vector3 pos)
+    private IEnumerator PlayHit(RaycastHit hit)
     {
         GameObject ht = hitPool.Get();
         ht.SetActive(true);
-        ht.transform.position = pos;
-        yield return new WaitForSeconds(0.5f);
+        ht.transform.position = hit.point + (hit.normal * 0.1f);
+        yield return new WaitForSeconds(0.2f);
         ht.SetActive(false);
         hitPool.Release(ht);
     }
@@ -106,7 +106,7 @@ public class GunSO : ScriptableObject
 
         if (hit.point != null && hit.collider != null)
         {
-            activeMB.StartCoroutine(PlayHit(hit.point));
+            activeMB.StartCoroutine(PlayHit(hit));
             if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
             {
                 float dmg = damage * StaticData.dmgBuffMult;

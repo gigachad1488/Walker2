@@ -423,8 +423,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.1
+  far clip plane: 2
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1036,7 +1036,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 215
+    m_Bits: 471
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1477,7 +1477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7847945745652156034}
-  abilityPrefab: {fileID: 1842523708540952032, guid: b2f224f47bd3deb4390bfd9597a79c8a,
+  abilityPrefab: {fileID: 3671057138427286847, guid: 13a6a565433811a4ba28aae176c8fb33,
     type: 3}
   abilityHand: {fileID: 2707581357197312885}
   uiCanvas: {fileID: 78513945}
@@ -3580,7 +3580,7 @@ Transform:
   m_GameObject: {fileID: 1921788416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.977, z: 0}
+  m_LocalPosition: {x: -0.055, y: -0.619, z: 0.031}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

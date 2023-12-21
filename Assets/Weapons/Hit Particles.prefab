@@ -76,8 +76,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 4.17
+  m_Intensity: 0.5
+  m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -118,7 +118,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 1.14541275e-14, z: 2.7210908e-20, w: 1.46947e-39}
@@ -191,14 +191,14 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7565333627127694633}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 0.2
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -301,8 +301,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.9
+      minScalar: 0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -401,8 +401,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.4
-      minScalar: 0.15
+      scalar: 0.6
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -610,7 +610,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 1
-    maxNumParticles: 1000
+    maxNumParticles: 100
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -757,7 +757,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.35707143
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -968,7 +968,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 20
+        scalar: 10
         minScalar: 30
         maxCurve:
           serializedVersion: 2
