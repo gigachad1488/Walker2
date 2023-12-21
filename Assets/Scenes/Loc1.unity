@@ -1592,7 +1592,7 @@ TerrainCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816588760}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: eca19564de82d7d488ac223fc2eae42d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1637,11 +1637,11 @@ Terrain:
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
   m_ReceiveGI: 1
-  m_ScaleInLightmap: 0.0256
+  m_ScaleInLightmap: 1
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
   m_GroupingID: 0
   m_RenderingLayerMask: 1
-  m_AllowAutoConnect: 1
+  m_AllowAutoConnect: 0
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
@@ -17644,7 +17644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8092527540969938737}
-  abilityPrefab: {fileID: 1842523708540952032, guid: b2f224f47bd3deb4390bfd9597a79c8a,
+  abilityPrefab: {fileID: 3671057138427286847, guid: 13a6a565433811a4ba28aae176c8fb33,
     type: 3}
   abilityHand: {fileID: 5012006745602070671}
   uiCanvas: {fileID: 4978526292036088216}
