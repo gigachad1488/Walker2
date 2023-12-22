@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0029e2f9b12743f4ca3119623ceb24d8, type: 3}
+  m_Name: DeagleAudio
+  m_EditorClassIdentifier: 
+  fireClips:
+  - {fileID: 8300000, guid: 87ee60b3950ff844d95b11f58fd01bad, type: 3}
+  - {fileID: 8300000, guid: 8819a382b767a2d4ba82a476bc4277f2, type: 3}
+  emptyClip: {fileID: 8300000, guid: 14a57a3024d6da24dbbe113b2c577277, type: 3}
+  reloadClip: {fileID: 8300000, guid: 5e669f36668a4c54c801a2693c5da689, type: 3}
+  audioSource: {fileID: 0}

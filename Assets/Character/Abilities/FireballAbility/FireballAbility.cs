@@ -8,7 +8,7 @@ public class FireballAbility : MonoBehaviour, IAbility
     private PlayerController player;
 
     [SerializeField]
-    private float value;
+    private int value;
     public float Value
     {
         get

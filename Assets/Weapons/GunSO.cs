@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -9,13 +11,17 @@ public class GunSO : ScriptableObject
 {
     public GunType type;
     public string name;
-    public float damage;
-    public int ammo;
+
+    public int maxAmmo;
+    public int currentAmmo;
+
     public GameObject modelPrefab;
     public Vector3 spawnPoint;
     public Vector3 spawnRotation;
+    public DamageConfigurationSO damageConfig;
     public ShootConfigurationSO shootConfig;
     public TrailConfigurationSO trailConfig;
+    public AudioConfigSO audioConfig;
     public DamageText damageTextPrefab;
 
     public GameObject hitPrefab;
@@ -24,6 +30,7 @@ public class GunSO : ScriptableObject
     private MonoBehaviour activeMB;
     public GameObject model;
     private float lastShootTime;
+    private AudioSource shootingAudioSource;
     private ParticleSystem shootSystem;
     private ObjectPool<TrailRenderer> trailPool;
     private ProceduralRecoil recoil;
@@ -42,20 +49,22 @@ public class GunSO : ScriptableObject
 
         shootSystem = model.GetComponentInChildren<ParticleSystem>();
         recoil = model.GetComponentInParent<ProceduralRecoil>();
+        shootingAudioSource = model.GetComponentInChildren<AudioSource>();
+        audioConfig.audioSource = shootingAudioSource;
+
+        currentAmmo = maxAmmo;
     }
 
     public void Shoot()
     {
         shootSystem.Play();
+        audioConfig.PlayShootingCLip();
 
         //Vector3 spreadAmount = shootConfig.GetSpread(0);
         Vector3 shootDirection = model.transform.parent.forward;
 
         if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask))
         {
-            //GameObject hp = Instantiate(hitPrefab, hit.point, Quaternion.identity);
-            //Destroy(hp, 0.2f);
-            //
             activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
         }
         else
@@ -107,12 +116,10 @@ public class GunSO : ScriptableObject
         if (hit.point != null && hit.collider != null)
         {
             activeMB.StartCoroutine(PlayHit(hit));
-            if (hit.collider.TryGetComponent<IDamagable>(out IDamagable damagable))
+
+            if (hit.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
             {
-                float dmg = damage * StaticData.dmgBuffMult;
-                damagable.Damage(dmg);
-                DamageText damageText = Instantiate(damageTextPrefab, hit.point, Quaternion.identity);
-                damageText.damage = dmg;
+                damageable.Damage(damageConfig.GetDamage(), hit.point);
             }
         }
     }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FireballUnit : MonoBehaviour
 {
-    public float damage = 0;
-    public float speed = 0;
-    public float radius = 0;
-    public float maxFlightTime = 0;
+    public int damage = 10;
+    public float speed = 10;
+    public float radius = 2;
+    public float maxFlightTime = 4;
 
     [SerializeField]
     private ParticleSystem explodeParticles;
@@ -37,9 +37,9 @@ public class FireballUnit : MonoBehaviour
 
         foreach (Collider item in hits) 
         {
-            if (item.TryGetComponent<IDamagable>(out IDamagable damagable))
+            if (item.TryGetComponent<IDamageable>(out IDamageable damagable))
             {
-                damagable.Damage(damage);
+                damagable.Damage(damage, item.transform.position);
             }
         }
 

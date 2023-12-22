@@ -24,8 +24,12 @@ public class PlayerAction : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI currentAmmoText;
+
     [SerializeField]
     private TextMeshProUGUI maxAmmoText;
+
+    [SerializeField]
+    private Camera mainCamera;
 
     [SerializeField]
     private Rig aimRig;
@@ -41,10 +45,10 @@ public class PlayerAction : MonoBehaviour
     private float abilityCD;
     private float abilityTargetRig;
 
-    private float lastShootTime = 0;
+    private float defaultFov;
+    private float targetFov;
 
-    private int maxAmmo;
-    private int currentAmmo;
+    private float lastShootTime = 0;
 
     private void Start()
     {
@@ -54,10 +58,12 @@ public class PlayerAction : MonoBehaviour
         targetRig = 0;
         abilityCD = 0;
 
-        maxAmmo = gunSelector.activeGun.ammo;
-        maxAmmoText.text = maxAmmo.ToString();
-        currentAmmo = maxAmmo;
-        currentAmmoText.text = currentAmmo.ToString();
+        defaultFov = mainCamera.fieldOfView;
+        targetFov = defaultFov;
+
+        maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
+
+        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
     }
 
     private void Update()
@@ -67,6 +73,7 @@ public class PlayerAction : MonoBehaviour
             if (Input.GetKey(KeyCode.Q))
             {
                 abilityManager.ShowAbilityIndicator();
+                targetFov = defaultFov;
                 abilityTargetRig = 1;
                 targetRig = 0;
                 recoil.aim = false;
@@ -84,7 +91,7 @@ public class PlayerAction : MonoBehaviour
 
         if (abilityRig.weight < 0.1f)
         {
-            if (Input.GetKey(KeyCode.R) && !reloading && currentAmmo < maxAmmo)
+            if (Input.GetKey(KeyCode.R) && !reloading && gunSelector.activeGun.currentAmmo < gunSelector.activeGun.maxAmmo)
             {
                 Reloading();
             }
@@ -94,11 +101,13 @@ public class PlayerAction : MonoBehaviour
                 if (Mouse.current.rightButton.isPressed)
                 {
                     targetRig = 1;
+                    targetFov = defaultFov * 0.7f;
                     recoil.aim = true;
                 }
                 else
                 {
                     targetRig = 0;
+                    targetFov = defaultFov;
                     recoil.aim = false;
                 }
             }
@@ -106,12 +115,13 @@ public class PlayerAction : MonoBehaviour
 
         float aimlerp = Mathf.Lerp(aimRig.weight, targetRig, 15 * Time.deltaTime);
         aimRig.weight = aimlerp;
+        mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFov, 15 * Time.deltaTime);
 
-        if (Mouse.current.leftButton.isPressed && gunSelector.activeGun != null && !reloading && currentAmmo > 0 && Time.time > gunSelector.activeGun.shootConfig.fireRate + lastShootTime)
+        if (Mouse.current.leftButton.isPressed && gunSelector.activeGun != null && !reloading && gunSelector.activeGun.currentAmmo > 0 && Time.time > gunSelector.activeGun.shootConfig.fireRate + lastShootTime)
         {
             lastShootTime = Time.time;
-            currentAmmo--;
-            currentAmmoText.text = currentAmmo.ToString();
+            gunSelector.activeGun.currentAmmo--;
+            currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
             gunSelector.activeGun.Shoot();
             recoil.recoilX = gunSelector.activeGun.shootConfig.spread.x;
             recoil.recoilY = gunSelector.activeGun.shootConfig.spread.y;
@@ -125,16 +135,17 @@ public class PlayerAction : MonoBehaviour
     {
         reloading = true;
         targetRig = 0;
+        targetFov = defaultFov;
 
         Vector3 magInitPos = gunSelector.weaponIKGrips.magazineTransform.localPosition;
 
-        List<Vector3> gunpaths = new List<Vector3>();
-        gunpaths.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.1f, gunSelector.activeGunTransform.localPosition.z + 0.05f));
-        gunpaths.Add(gunSelector.initPos);
+        Vector3[] gunpaths = new Vector3[2];
+        gunpaths[0] = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.1f, gunSelector.activeGunTransform.localPosition.z + 0.05f);
+        gunpaths[1] = gunSelector.initPos;
 
-        List<Vector3> paths = new List<Vector3>();
-        paths.Add(reloadArmDest.transform.localPosition);
-        paths.Add(gunSelector.weaponIKGrips.magazine.transform.localPosition);
+        Vector3[] paths = new Vector3[2];
+        paths[0] = reloadArmDest.transform.localPosition;
+        paths[1] = gunSelector.weaponIKGrips.magazine.transform.localPosition;
         //paths.Add(gunSelector.weaponIKGrips.leftHandGrip.transform.localPosition);
 
         Sequence s = DOTween.Sequence(); //hell
@@ -142,22 +153,24 @@ public class PlayerAction : MonoBehaviour
         s.Join(DOVirtual.Float(0, 1, 0.2f, x => reloadRig.weight = x));
         s.Join(gunSelector.reloadArm.DOLocalMove(gunSelector.weaponIKGrips.magazine.transform.localPosition, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            List<Vector3> p = new List<Vector3>();
-            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.03f, gunSelector.activeGunTransform.localPosition.z));
-            p.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z));
+            Vector3[] p = new Vector3[2];
+            p[0] = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.03f, gunSelector.activeGunTransform.localPosition.z);
+            p[1] = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z);
 
-            gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.reloadArm);
-            gunSelector.activeGunTransform.DOLocalPath(p.ToArray(), 0.5f).SetDelay(0.1f).SetEase(Ease.OutCubic);
+            gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.reloadArm); //grab mag
+            gunSelector.activeGun.audioConfig.PlayEmptyClip();
+            gunSelector.activeGunTransform.DOLocalPath(p, 0.5f).SetDelay(0.1f).SetEase(Ease.OutCubic);
             gunSelector.reloadArm.DOLocalMove(paths[0], 0.2f).SetEase(Ease.InQuint).OnComplete(() => gunSelector.reloadArm.DOLocalMove(paths[1], 0.2f).SetDelay(0.8f).OnComplete(() =>
             {             
-                gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform);
+                gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform); //put mag
+                gunSelector.activeGun.audioConfig.PlayReloadClip();
                 gunSelector.weaponIKGrips.magazineTransform.localPosition = magInitPos;
-                currentAmmo = maxAmmo;
-                currentAmmoText.text = currentAmmo.ToString();
-                List<Vector3> pp = new List<Vector3>();
-                pp.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.015f, gunSelector.activeGunTransform.localPosition.z));
-                pp.Add(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z));
-                gunSelector.activeGunTransform.DOLocalPath(pp.ToArray(), 0.2f).SetEase(Ease.OutCubic);
+                gunSelector.activeGun.currentAmmo = gunSelector.activeGun.maxAmmo;
+                currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+                Vector3[] pp = new Vector3[2];
+                pp[0] = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.015f, gunSelector.activeGunTransform.localPosition.z);
+                pp[1] = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y, gunSelector.activeGunTransform.localPosition.z);
+                gunSelector.activeGunTransform.DOLocalPath(pp, 0.2f).SetEase(Ease.OutCubic);
             }));
         }));
         
