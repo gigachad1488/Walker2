@@ -39,6 +39,8 @@ public class PlayerAction : MonoBehaviour
     private Rig reloadRig;
     [SerializeField]
     private Rig abilityRig;
+    [SerializeField]
+    private Rig switchingRig;
 
     private float targetRig = 0;
     private bool reloading = false;
@@ -68,6 +70,15 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            SwitchingWeapon(0);
+        }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            SwitchingWeapon(1);
+        }
+
         if (abilityCD <= 0 && !reloading)
         {
             if (Input.GetKey(KeyCode.Q))
@@ -129,6 +140,30 @@ public class PlayerAction : MonoBehaviour
             recoil.kickBackZ = gunSelector.activeGun.shootConfig.kickBack;
             recoil.Recoil();
         }
+    }
+
+    private void SwitchingWeapon(int i)
+    {
+        Sequence s = DOTween.Sequence();
+        s.Append(gunSelector.activeGunTransform.DOLocalMove(new Vector3(gunSelector.activeGunTransform.localPosition.x,  -0.4f, gunSelector.activeGunTransform.localPosition.z), 0.8f).OnComplete(() =>
+        {
+            Vector3 prevt = gunSelector.activeGunTransform.localPosition;
+            gunSelector.SwitchWeapon(i);
+            gunSelector.activeGunTransform.localPosition = prevt;
+            currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+            maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
+        }));
+        s.Join(DOVirtual.Float(0, 1, 0.6f, x => switchingRig.weight = x).SetDelay(0.2f));
+        s.Append(gunSelector.activeGunTransform.DOLocalMove(gunSelector.initPos, 0.4f));
+        s.AppendInterval(0.8f);
+        s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(gunSelector.initRot, 0.4f).SetEase(Ease.OutQuad));
+        s.Join(DOVirtual.Float(1, 0, 0.6f, x => switchingRig.weight = x));
+        s.OnComplete(() =>
+        {
+            gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
+            gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
+        });
+        s.Play();
     }
 
     private void Reloading()
