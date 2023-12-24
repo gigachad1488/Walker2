@@ -72,7 +72,7 @@ public class PlayerAction : MonoBehaviour
 
         maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
 
-        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();       
     }
 
     private void Update()
@@ -98,22 +98,10 @@ public class PlayerAction : MonoBehaviour
 
 
         abilityRig.weight = Mathf.Lerp(abilityRig.weight, abilityTargetRig, 10 * Time.deltaTime);
-        abilityCD -= Time.deltaTime;
-
-        float aimlerp = Mathf.Lerp(aimRig.weight, targetRig, 15 * Time.deltaTime);
-        aimRig.weight = aimlerp;
-        mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFov, 15 * Time.deltaTime);
+        abilityCD -= Time.deltaTime;       
 
         if (!switching)
-        {
-            if (Input.GetKey(KeyCode.Alpha1))
-            {
-                SwitchingWeapon(0);
-            }
-            if (Input.GetKey(KeyCode.Alpha2))
-            {
-                SwitchingWeapon(1);
-            }
+        {          
 
             if (abilityRig.weight < 0.1f)
             {
@@ -124,8 +112,20 @@ public class PlayerAction : MonoBehaviour
 
                 if (!reloading)
                 {
+                    if (Input.GetKey(KeyCode.Alpha1))
+                    {
+                        SwitchingWeapon(0);
+                        return;
+                    }
+                    if (Input.GetKey(KeyCode.Alpha2))
+                    {
+                        SwitchingWeapon(1);
+                        return;
+                    }
+
                     if (Mouse.current.rightButton.isPressed)
                     {
+                        Debug.Log("DDDDDDDDD");
                         targetRig = 1;
                         targetFov = defaultFov * 0.7f;
                         recoil.aim = true;
@@ -144,14 +144,14 @@ public class PlayerAction : MonoBehaviour
                 lastShootTime = Time.time;
                 gunSelector.activeGun.currentAmmo--;
                 currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
-                gunSelector.activeGun.Shoot();
-                recoil.recoilX = gunSelector.activeGun.shootConfig.spread.x;
-                recoil.recoilY = gunSelector.activeGun.shootConfig.spread.y;
-                recoil.recoilZ = gunSelector.activeGun.shootConfig.spread.z;
-                recoil.kickBackZ = gunSelector.activeGun.shootConfig.kickBack;
+                gunSelector.activeGun.Shoot();               
                 recoil.Recoil();
             }
         }
+
+        float aimlerp = Mathf.Lerp(aimRig.weight, targetRig, 15 * Time.deltaTime);
+        aimRig.weight = aimlerp;
+        mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFov, 15 * Time.deltaTime);
     }
 
     private void SwitchingWeapon(int i)
@@ -161,8 +161,10 @@ public class PlayerAction : MonoBehaviour
             switching = true;
             targetRig = 0;
             targetFov = defaultFov;
+            recoil.aim = false;
+            Quaternion tq = Quaternion.Euler(0, - 20, 0);
             Sequence s = DOTween.Sequence();
-            s.Append(gunSelector.activeGunTransform.DOLocalMove(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.8f).OnComplete(() =>
+            s.Append(gunSelector.activeGunTransform.DOLocalMove(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.5f).OnComplete(() =>
             {
                 Vector3 prevt = gunSelector.activeGunTransform.localPosition;
                 aimRig.weight = 0;
@@ -173,27 +175,34 @@ public class PlayerAction : MonoBehaviour
                 gunSelector.SwitchWeapon(i);
                 handRig[i].weight = 1;
                 gunSelector.activeGunTransform.localPosition = prevt;
+                gunSelector.activeGunTransform.localRotation = gunSelector.initRot * tq;
                 currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
                 maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
                 currentRigId = i;
             }));
-            s.Join(DOVirtual.Float(0, 1, 0.6f, x => switchingRig[currentRigId].weight = x).SetDelay(0.2f));
-            s.Join(DOVirtual.Float(1, 0, 0.9f, x => armRig.weight = x));
+            s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(gunSelector.activeGunTransform.localRotation * tq, 0.5f).SetEase(Ease.OutQuint));
+            s.Join(DOVirtual.Float(0, 1, 0.4f, x => switchingRig[currentRigId].weight = x).SetDelay(0.2f));
+            s.Join(DOVirtual.Float(1, 0, 0.6f, x => armRig.weight = x));
             s.Play();
             s.OnComplete(() =>
             {
                 Sequence ss = DOTween.Sequence();
                 ss.Append(gunSelector.activeGunTransform.DOLocalMove(gunSelector.initPos, 0.4f));
-                ss.AppendInterval(0.4f);
                 ss.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(gunSelector.initRot, 0.4f).SetEase(Ease.OutQuad));
-                ss.Join(DOVirtual.Float(1, 0, 0.6f, x => switchingRig[i].weight = x));
-                ss.Join(DOVirtual.Float(0, 1, 0.6f, x => armRig.weight = x));
+                ss.Join(DOVirtual.Float(1, 0, 0.4f, x => switchingRig[i].weight = x));
+                ss.Join(DOVirtual.Float(0, 1, 0.4f, x => armRig.weight = x));
                 ss.OnComplete(() =>
                 {
                     gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
                     gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
                     armRig.weight = 1;
                     switching = false;
+
+                    recoil.recoilX = gunSelector.activeGun.shootConfig.spread.x;
+                    recoil.recoilY = gunSelector.activeGun.shootConfig.spread.y;
+                    recoil.recoilZ = gunSelector.activeGun.shootConfig.spread.z;
+                    recoil.kickBackZ = gunSelector.activeGun.shootConfig.kickBack;
+
                 });
                 ss.Play();
             });

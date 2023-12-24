@@ -16,8 +16,7 @@ public class PlayerGunSelector : MonoBehaviour
     [SerializeField]
     private List<GunSO> guns;
 
-    [SerializeField]
-    private List<GunInventory> gunsInInventory;
+    public List<GunInventory> gunsInInventory;
 
     public GunSO activeGun;
     public Transform activeGunTransform;
@@ -40,6 +39,14 @@ public class PlayerGunSelector : MonoBehaviour
     {
         currentGunId = 0;
         SpawnWeapons();
+        activeGun = gunsInInventory[0].gun;
+    }
+
+    private void Start()
+    {
+        gunsInInventory[0].gun.model.SetActive(false);
+        gunsInInventory[1].gun.model.SetActive(false);
+
         SwitchWeapon(0);
     }
 
@@ -63,7 +70,7 @@ public class PlayerGunSelector : MonoBehaviour
             reloadLeftHandConst[currentGunId].data.target = grips.reloadAnimArm;
             //abilityRightHandConst[currentGunId].data.target = grips.rightHandGrip;
             switchingRightHandConst[currentGunId].data.target = grips.rightHandGrip;          
-            gun.model.SetActive(false);
+            //gun.model.SetActive(false);
 
             gunsInInventory.Add(gunInventory);
 
@@ -71,14 +78,15 @@ public class PlayerGunSelector : MonoBehaviour
         }
 
         builder.Build();
+      
     }
 
     public void SwitchWeapon(int i)
     {
-        builder.Build();
-        if (activeGun == null || activeGun.type != gunsInInventory[i].gun.type)
+        //builder.Build();
+        if (activeGunTransform == null || activeGun.type != gunsInInventory[i].gun.type)
         {
-            if (activeGun != null)
+            if (activeGunTransform != null)
             {
                 activeGunTransform.localPosition = initPos;
                 activeGunTransform.localRotation = initRot;
