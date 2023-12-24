@@ -25,23 +25,26 @@ public class PlayerGunSelector : MonoBehaviour
     public Quaternion initRot;
     public Vector3 initPos;
 
+    public int currentGunId;
+
     public Transform reloadArm;
-    public TwoBoneIKConstraint leftHandConst;
-    public TwoBoneIKConstraint rightHandConst;
-    public TwoBoneIKConstraint reloadLeftHandConst;
-    public TwoBoneIKConstraint reloadRightHandConst;
-    public TwoBoneIKConstraint abilityRightHandConst;
-    public TwoBoneIKConstraint switchingRightHandConst;
+    public TwoBoneIKConstraint[] leftHandConst = new TwoBoneIKConstraint[2];
+    public TwoBoneIKConstraint[] rightHandConst = new TwoBoneIKConstraint[2];
+    public TwoBoneIKConstraint[] reloadLeftHandConst = new TwoBoneIKConstraint[2];
+    public TwoBoneIKConstraint[] reloadRightHandConst = new TwoBoneIKConstraint[2];
+    public TwoBoneIKConstraint[] abilityRightHandConst = new TwoBoneIKConstraint[2];
+    public TwoBoneIKConstraint[] switchingRightHandConst = new TwoBoneIKConstraint[2];
     public RigBuilder builder;
 
     private void Awake()
     {
+        currentGunId = 0;
         SpawnWeapons();
         SwitchWeapon(0);
     }
 
     private void SpawnWeapons()
-    {
+    {       
         gunsInInventory = new List<GunInventory>();
 
         foreach (GunSO gun in guns)
@@ -54,14 +57,25 @@ public class PlayerGunSelector : MonoBehaviour
             gunInventory.initRot = gunInventory.gunTransform.localRotation;
             WeaponIKGrips grips = gun.model.GetComponent<WeaponIKGrips>();
             gunInventory.weaponIKGrips = grips;
+            leftHandConst[currentGunId].data.target = grips.leftHandGrip;
+            rightHandConst[currentGunId].data.target = grips.rightHandGrip;
+            reloadRightHandConst[currentGunId].data.target = grips.rightHandGrip;
+            reloadLeftHandConst[currentGunId].data.target = grips.reloadAnimArm;
+            //abilityRightHandConst[currentGunId].data.target = grips.rightHandGrip;
+            switchingRightHandConst[currentGunId].data.target = grips.rightHandGrip;          
             gun.model.SetActive(false);
 
             gunsInInventory.Add(gunInventory);
+
+            currentGunId++;
         }
+
+        builder.Build();
     }
 
     public void SwitchWeapon(int i)
     {
+        builder.Build();
         if (activeGun == null || activeGun.type != gunsInInventory[i].gun.type)
         {
             if (activeGun != null)
@@ -72,6 +86,7 @@ public class PlayerGunSelector : MonoBehaviour
             }
 
             activeGun = gunsInInventory[i].gun;
+            currentGunId = i;
             activeGun.model.SetActive(true);
             activeGunTransform = activeGun.model.transform;
             weaponIKGrips = gunsInInventory[i].weaponIKGrips;
@@ -80,14 +95,7 @@ public class PlayerGunSelector : MonoBehaviour
             //activeGun.model.transform.localPosition = initPos;
             //activeGun.model.transform.localRotation = initRot;
 
-            reloadArm = weaponIKGrips.reloadAnimArm;
-            leftHandConst.data.target = weaponIKGrips.leftHandGrip;
-            rightHandConst.data.target = weaponIKGrips.rightHandGrip;
-            reloadRightHandConst.data.target = weaponIKGrips.rightHandGrip;
-            reloadLeftHandConst.data.target = reloadArm;
-            abilityRightHandConst.data.target = weaponIKGrips.rightHandGrip;
-            switchingRightHandConst.data.target = weaponIKGrips.rightHandGrip;
-            builder.Build();
+            reloadArm = weaponIKGrips.reloadAnimArm;           
         }
     }
 }
