@@ -72,11 +72,11 @@ public class PlayerAction : MonoBehaviour
 
         maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
 
-        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();       
+        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
     }
 
     private void Update()
-    {      
+    {
         if (abilityCD <= 0 && !reloading)
         {
             if (Input.GetKey(KeyCode.Q))
@@ -98,34 +98,35 @@ public class PlayerAction : MonoBehaviour
 
 
         abilityRig.weight = Mathf.Lerp(abilityRig.weight, abilityTargetRig, 10 * Time.deltaTime);
-        abilityCD -= Time.deltaTime;       
+        abilityCD -= Time.deltaTime;
 
         if (!switching)
-        {          
-
-            if (abilityRig.weight < 0.1f)
+        {
+            if (!reloading)
             {
-                if (Input.GetKey(KeyCode.R) && !reloading && gunSelector.activeGun.currentAmmo < gunSelector.activeGun.maxAmmo)
+                if (Input.GetKey(KeyCode.Alpha1))
                 {
-                    Reloading();
+                    SwitchingWeapon(0);
+                    return;
+                }
+                if (Input.GetKey(KeyCode.Alpha2))
+                {
+                    SwitchingWeapon(1);
+                    return;
                 }
 
-                if (!reloading)
+
+                if (abilityRig.weight < 0.1f)
                 {
-                    if (Input.GetKey(KeyCode.Alpha1))
+
+                    if (Input.GetKey(KeyCode.R) && !reloading && gunSelector.activeGun.currentAmmo < gunSelector.activeGun.maxAmmo)
                     {
-                        SwitchingWeapon(0);
-                        return;
-                    }
-                    if (Input.GetKey(KeyCode.Alpha2))
-                    {
-                        SwitchingWeapon(1);
+                        Reloading();
                         return;
                     }
 
                     if (Mouse.current.rightButton.isPressed)
                     {
-                        Debug.Log("DDDDDDDDD");
                         targetRig = 1;
                         targetFov = defaultFov * 0.7f;
                         recoil.aim = true;
@@ -136,16 +137,17 @@ public class PlayerAction : MonoBehaviour
                         targetFov = defaultFov;
                         recoil.aim = false;
                     }
-                }
-            }            
 
-            if (Mouse.current.leftButton.isPressed && gunSelector.activeGun != null && !reloading && gunSelector.activeGun.currentAmmo > 0 && Time.time > gunSelector.activeGun.shootConfig.fireRate + lastShootTime)
-            {
-                lastShootTime = Time.time;
-                gunSelector.activeGun.currentAmmo--;
-                currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
-                gunSelector.activeGun.Shoot();               
-                recoil.Recoil();
+                }
+
+                if (Mouse.current.leftButton.isPressed && gunSelector.activeGun != null && !reloading && gunSelector.activeGun.currentAmmo > 0 && Time.time > gunSelector.activeGun.shootConfig.fireRate + lastShootTime)
+                {
+                    lastShootTime = Time.time;
+                    gunSelector.activeGun.currentAmmo--;
+                    currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+                    gunSelector.activeGun.Shoot();
+                    recoil.Recoil();
+                }
             }
         }
 
@@ -162,7 +164,7 @@ public class PlayerAction : MonoBehaviour
             targetRig = 0;
             targetFov = defaultFov;
             recoil.aim = false;
-            Quaternion tq = Quaternion.Euler(0, - 20, 0);
+            Quaternion tq = Quaternion.Euler(0, -20, 0);
             Sequence s = DOTween.Sequence();
             s.Append(gunSelector.activeGunTransform.DOLocalMove(new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.5f).OnComplete(() =>
             {
@@ -241,7 +243,7 @@ public class PlayerAction : MonoBehaviour
             gunSelector.activeGun.audioConfig.PlayEmptyClip();
             gunSelector.activeGunTransform.DOLocalPath(p, 0.5f).SetDelay(0.1f).SetEase(Ease.OutCubic);
             gunSelector.reloadArm.DOLocalMove(paths[0], 0.2f).SetEase(Ease.InQuint).OnComplete(() => gunSelector.reloadArm.DOLocalMove(paths[1], 0.2f).SetDelay(0.8f).OnComplete(() =>
-            {             
+            {
                 gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform); //put mag
                 gunSelector.activeGun.audioConfig.PlayReloadClip();
                 gunSelector.weaponIKGrips.magazineTransform.localPosition = magInitPos;
@@ -253,7 +255,7 @@ public class PlayerAction : MonoBehaviour
                 gunSelector.activeGunTransform.DOLocalPath(pp, 0.2f).SetEase(Ease.OutCubic);
             }));
         }));
-        
+
         s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(Quaternion.Euler(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), 0.8f).SetEase(Ease.OutQuint)).PrependInterval(0.1f);
         s.AppendInterval(0.8f);
         s.Append(gunSelector.activeGunTransform.DOLocalMove(gunpaths[1], 0.4f));
@@ -265,6 +267,6 @@ public class PlayerAction : MonoBehaviour
             gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
             gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
         });
-        s.Play();      
+        s.Play();
     }
 }
