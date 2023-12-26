@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Walker2.Controller;
 
 public interface IAbility
@@ -20,4 +21,9 @@ public interface IAbility
     public float Duration { get; }
     
     public GameObject AbilityParticlesPrefab { get; }
+
+    public Sprite AbilitySprite { get; }
+
+    public void SetUi(Image ai)
+    { }
 }

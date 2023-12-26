@@ -5,13 +5,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 [DisallowMultipleComponent]
 public class PlayerAction : MonoBehaviour
 {
     [SerializeField]
-    private AbilityManager abilityManager;
+    private AbilityManager abilityManager1;
+    [SerializeField]
+    private AbilityManager abilityManager2;
+
+    [SerializeField]
+    private Image ability1UI;
+    [SerializeField]
+    private Image ability2UI;
 
     [SerializeField]
     private PlayerGunSelector gunSelector;
@@ -46,8 +54,14 @@ public class PlayerAction : MonoBehaviour
 
     private float targetRig = 0;
     private bool reloading = false;
-    private float abilityCD;
+    private float abilitySwitchCD;
     private float abilityTargetRig;
+
+    private bool ability1 = false;
+    private bool ability2 = false;
+
+    private float ability1CD;
+    private float ability2CD;
 
     private int currentRigId = 0;
     private bool switching = false;
@@ -63,7 +77,8 @@ public class PlayerAction : MonoBehaviour
         aimRig.weight = 0;
         armRig.weight = 1;
         targetRig = 0;
-        abilityCD = 0;
+        ability1CD = 0;
+        ability2CD = 0;
 
         handRig[1].weight = 0;
 
@@ -73,32 +88,66 @@ public class PlayerAction : MonoBehaviour
         maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
 
         currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+
+        abilityManager1.SetUi(ability1UI);
+        abilityManager2.SetUi(ability2UI);
     }
 
     private void Update()
     {
-        if (abilityCD <= 0 && !reloading)
+        if (abilitySwitchCD <= 0 && !reloading)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (!ability2 && ability1CD <= 0)
             {
-                abilityManager.ShowAbilityIndicator();
-                targetFov = defaultFov;
-                abilityTargetRig = 1;
-                targetRig = 0;
-                recoil.aim = false;
+                if (Input.GetKey(KeyCode.Q))
+                {
+                    abilityManager1.ShowAbilityIndicator();
+                    targetFov = defaultFov;
+                    abilityTargetRig = 1;
+                    targetRig = 0;
+                    recoil.aim = false;
+                    ability1 = true;
+                }
+                else if (abilityRig.weight >= 0.9f)
+                {
+                    abilityTargetRig = 0;
+                    ability1CD = abilityManager1.cd;
+                    abilitySwitchCD = 0.3f;
+                    abilityManager1.FireAbility();
+                    ability1 = false;
+                    goto skipability;
+                }
             }
-            else if (abilityRig.weight >= 0.9f)
+
+            if (!ability1 && ability2CD <= 0)
             {
-                abilityTargetRig = 0;
-                abilityCD = abilityManager.cd;
-                abilityManager.FireAbility();
+                if (Input.GetKey(KeyCode.E))
+                {
+                    abilityManager2.ShowAbilityIndicator();
+                    targetFov = defaultFov;
+                    abilityTargetRig = 1;
+                    targetRig = 0;
+                    recoil.aim = false;
+                    ability2 = true;
+                }
+                else if (abilityRig.weight >= 0.9f)
+                {
+                    abilityTargetRig = 0;
+                    ability2CD = abilityManager2.cd;
+                    abilitySwitchCD = 0.3f;
+                    abilityManager2.FireAbility();
+                    ability2 = false;
+                    goto skipability;
+                }
             }
         }
 
-
+        skipability:
 
         abilityRig.weight = Mathf.Lerp(abilityRig.weight, abilityTargetRig, 10 * Time.deltaTime);
-        abilityCD -= Time.deltaTime;
+        ability1CD -= Time.deltaTime;
+        ability2CD -= Time.deltaTime;
+        abilitySwitchCD -= Time.deltaTime;
 
         if (!switching)
         {

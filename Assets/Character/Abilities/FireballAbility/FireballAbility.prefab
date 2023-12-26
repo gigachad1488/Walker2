@@ -54,3 +54,4 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 55
+  abilitySprite: {fileID: 21300000, guid: 7f6fafc0e6f23464cb614635c0984e71, type: 3}

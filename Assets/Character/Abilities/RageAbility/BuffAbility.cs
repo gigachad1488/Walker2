@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Walker2.Controller;
 
 public class BuffAbility : MonoBehaviour, IAbility
@@ -53,6 +54,17 @@ public class BuffAbility : MonoBehaviour, IAbility
     [SerializeField]
     private ParticleSystem buffParticles;
 
+    [SerializeField]
+    private Sprite abilitySprite;
+
+    public Sprite AbilitySprite
+    {
+        get
+        {
+            return abilitySprite;
+        }
+    }
+
     public void SetPlayer(PlayerController player, Transform abilityHand, Canvas uiCanvas)
     {
         this.player = player;
@@ -99,5 +111,10 @@ public class BuffAbility : MonoBehaviour, IAbility
             abilityParticles.Stop();
             abilityParticlesGM.SetActive(false);         
         }
+    }
+
+    public void SetUi(Image ai)
+    {
+        ai.sprite = abilitySprite;
     }
 }

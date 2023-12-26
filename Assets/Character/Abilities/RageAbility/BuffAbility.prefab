@@ -51,3 +51,4 @@ MonoBehaviour:
     type: 3}
   buffParticles: {fileID: 2005694988079890889, guid: 47afe3c8bab9a3140b9ef9d967049872,
     type: 3}
+  abilitySprite: {fileID: 21300000, guid: 181c23a72ef5f94489c72c45977aca7a, type: 3}

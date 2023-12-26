@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Walker2.Controller;
 
 public class AbilityManager : MonoBehaviour
@@ -23,7 +24,7 @@ public class AbilityManager : MonoBehaviour
 
     public float cd;
 
-    private void Start()
+    private void Awake()
     {
         GameObject abl = Instantiate(abilityPrefab, transform);
         SetAbility(abl.GetComponent<IAbility>());
@@ -44,6 +45,11 @@ public class AbilityManager : MonoBehaviour
     public void ShowAbilityIndicator()
     {
         ability.ShowIndicator();
+    }
+
+    public void SetUi(Image ai)
+    {
+        ability.SetUi(ai);
     }
 
 }
