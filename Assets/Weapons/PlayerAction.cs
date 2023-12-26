@@ -60,6 +60,9 @@ public class PlayerAction : MonoBehaviour
     private bool ability1 = false;
     private bool ability2 = false;
 
+    private IEnumerator Ability1Recharge;
+    private IEnumerator Ability2Recharge;
+
     private float ability1CD;
     private float ability2CD;
 
@@ -115,6 +118,8 @@ public class PlayerAction : MonoBehaviour
                     abilitySwitchCD = 0.3f;
                     abilityManager1.FireAbility();
                     ability1 = false;
+                    Ability1Recharge = AbilityRecharge(0);
+                    StartCoroutine(Ability1Recharge);
                     goto skipability;
                 }
             }
@@ -127,7 +132,7 @@ public class PlayerAction : MonoBehaviour
                     targetFov = defaultFov;
                     abilityTargetRig = 1;
                     targetRig = 0;
-                    recoil.aim = false;
+                    recoil.aim = false;                  
                     ability2 = true;
                 }
                 else if (abilityRig.weight >= 0.9f)
@@ -137,6 +142,8 @@ public class PlayerAction : MonoBehaviour
                     abilitySwitchCD = 0.3f;
                     abilityManager2.FireAbility();
                     ability2 = false;
+                    Ability2Recharge = AbilityRecharge(1);
+                    StartCoroutine(Ability2Recharge);
                     goto skipability;
                 }
             }
@@ -145,8 +152,6 @@ public class PlayerAction : MonoBehaviour
         skipability:
 
         abilityRig.weight = Mathf.Lerp(abilityRig.weight, abilityTargetRig, 10 * Time.deltaTime);
-        ability1CD -= Time.deltaTime;
-        ability2CD -= Time.deltaTime;
         abilitySwitchCD -= Time.deltaTime;
 
         if (!switching)
@@ -317,5 +322,45 @@ public class PlayerAction : MonoBehaviour
             gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
         });
         s.Play();
+    }
+
+    private IEnumerator AbilityRecharge(int abilitySlot)
+    {
+        WaitForSeconds wfs = new WaitForSeconds(0.2f);
+        float cd = 0;
+        float timer = 0;
+
+        Image abilityImage = ability1UI;
+
+        if (abilitySlot == 0) 
+        {
+            abilityImage = ability1UI;
+            cd = ability1CD;
+        }
+        else if (abilitySlot == 1) 
+        {
+            abilityImage = ability2UI;
+            cd = ability2CD;
+        }
+
+        abilityImage.color = Color.gray;
+
+        while (timer <= cd)
+        {
+            timer += 0.2f;
+            abilityImage.fillAmount = timer / cd;
+            yield return wfs;
+        }
+
+        if (abilitySlot == 0)
+        {
+            ability1CD = 0;
+        }
+        else if (abilitySlot == 1)
+        {
+            ability2CD = 0;
+        }
+
+        abilityImage.color = Color.white;
     }
 }

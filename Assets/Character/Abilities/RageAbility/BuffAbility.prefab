@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85dcf02ea113b62448b6921899ce07ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 0.5
+  value: 0.6
   duration: 10
   cd: 15
   abilityParticlesPrefab: {fileID: 722978325131248217, guid: fb020e353bae2c34998bf3e32323b122,

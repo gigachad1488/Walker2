@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Damage", menuName = "Weapon Config/Damage", order = 1)]
 public class DamageConfigurationSO : ScriptableObject
 {
-    public Vector2Int damageRange;
+    public Vector2 damageRange;
 
     public int GetDamage()
     {
-        return Random.Range(damageRange.x, damageRange.y + 1);
+        Vector2 dmgWithMult = damageRange * StaticData.dmgBuffMult;
+        return Convert.ToInt32(UnityEngine.Random.Range(dmgWithMult.x, dmgWithMult.y + 1));
     }
 }

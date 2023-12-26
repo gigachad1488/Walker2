@@ -92,9 +92,8 @@ public class BuffAbility : MonoBehaviour, IAbility
 
     private void DisableBuff()
     {
-        StaticData.msBuffMult -= value;
-        StaticData.msBuffMult -= value;
-        StaticData.jumpBuffMult -= value;
+        StaticData.msBuffMult -= value * 0.8f;
+        StaticData.jumpBuffMult -= value * 0.3f;
         StaticData.dmgBuffMult -= value;
         buffParticles.Stop();
     }
