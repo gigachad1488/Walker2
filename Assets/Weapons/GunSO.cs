@@ -69,9 +69,9 @@ public class GunSO : ScriptableObject
             {
                 activeMB.StartCoroutine(PlayHit(hit));
 
-                if (hit.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
+                if (hit.transform.TryGetComponent<HitBox>(out HitBox hitbox))
                 {
-                    damageable.Damage(damageConfig.GetDamage(), hit.point);
+                    hitbox.OnHit(damageConfig.GetDamage(), hit.point);
                 }
             }
             //activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
