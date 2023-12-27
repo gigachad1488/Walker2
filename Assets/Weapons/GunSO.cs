@@ -40,7 +40,7 @@ public class GunSO : ScriptableObject
     {
         activeMB = activemb;
         lastShootTime = 0;
-        trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        //trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
         hitPool = new ObjectPool<GameObject>(CreateHit);
         model = Instantiate(modelPrefab);
         model.transform.SetParent(parent, false);
@@ -65,12 +65,23 @@ public class GunSO : ScriptableObject
 
         if (Physics.Raycast(shootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, shootConfig.hitMask))
         {
-            activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
+            if (hit.point != null && hit.collider != null)
+            {
+                activeMB.StartCoroutine(PlayHit(hit));
+
+                if (hit.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
+                {
+                    damageable.Damage(damageConfig.GetDamage(), hit.point);
+                }
+            }
+            //activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
         }
+        /*
         else
         {
             activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, shootSystem.transform.position + (shootDirection * trailConfig.missDistance), new RaycastHit()));
         }
+        */
     }
 
     private IEnumerator PlayHit(RaycastHit hit)
