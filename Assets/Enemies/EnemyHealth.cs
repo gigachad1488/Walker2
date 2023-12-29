@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEditor.PlayerSettings;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
@@ -15,7 +16,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField]
     private DamageText damageTextPrefab;
 
-    private EnemyMovement movement = null;
+    //private EnemyMovement movement = null;
 
     public bool dead = false;
 
@@ -36,8 +37,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
         if (dead)
         {
-            movement.enabled = true;
-            movement.agent.isStopped = false;
+            //movement.enabled = true;
+            //movement.agent.isStopped = false;
         }
 
         dead = false;
@@ -63,7 +64,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         currentHealth = maxHealth;
 
-        movement = GetComponent<EnemyMovement>();
+        //movement = GetComponent<EnemyMovement>();
     }
 
     public void Damage(int damage, float force, Vector3 position, Vector3 direction)
@@ -89,11 +90,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void Death(Vector3 direction, float force)
     {
         dead = true;
-        movement.agent.isStopped = true;
-        movement.enabled = false;
+        //movement.agent.isStopped = true;
+        //movement.enabled = false;
         Invoke(nameof(DisableEnemy), 10);
 
-        Rigidbody rb = movement.animator.GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>();
+        GetComponent<NavMeshAgent>().isStopped = true;
+
+        Rigidbody rb = GetComponent<Animator>().GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>();
         rb.AddForce(direction.normalized * force, ForceMode.Impulse);
     }
 
