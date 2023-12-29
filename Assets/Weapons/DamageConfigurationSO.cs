@@ -7,7 +7,7 @@ using UnityEngine;
 public class DamageConfigurationSO : ScriptableObject
 {
     public Vector2 damageRange;
-
+    public float force;
     public int GetDamage()
     {
         Vector2 dmgWithMult = damageRange * StaticData.dmgBuffMult;

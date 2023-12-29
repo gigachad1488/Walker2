@@ -8,6 +8,7 @@ public class FireballUnit : MonoBehaviour
     public float speed = 10;
     public float radius = 2;
     public float maxFlightTime = 4;
+    public float force;
 
     [SerializeField]
     private ParticleSystem explodeParticles;
@@ -20,7 +21,7 @@ public class FireballUnit : MonoBehaviour
         GetComponent<Collider>().enabled = true;
         rb.constraints = RigidbodyConstraints.None;
         var mm = explodeParticles.main;
-        mm.startSize = radius;
+        mm.startSize = radius * 0.5f;
         rb.velocity = direction * speed;
         Invoke(nameof(Explode), maxFlightTime);
     }
@@ -37,9 +38,11 @@ public class FireballUnit : MonoBehaviour
 
         foreach (Collider item in hits) 
         {
-            if (item.TryGetComponent<IDamageable>(out IDamageable damagable))
+            if (item.TryGetComponent<HitBox>(out HitBox hitbox))
             {
-                damagable.Damage(damage, item.transform.position);
+                hitbox.OnHit(damage, force, item.transform.position, item.transform.position - transform.position, 1);
+                Invoke(nameof(Destroy), 0.8f);
+                return;
             }
         }
 
@@ -47,13 +50,13 @@ public class FireballUnit : MonoBehaviour
     }
 
     public void Destroy()
-    {
+    {       
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        Explode(); 
+        Explode();
     }
 
     private void OnDrawGizmos()

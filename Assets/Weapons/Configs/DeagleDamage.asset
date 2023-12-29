@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DeagleDamage
   m_EditorClassIdentifier: 
   damageRange: {x: 70, y: 90}
+  force: 1200

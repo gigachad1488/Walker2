@@ -1,4 +1,5 @@
 using DG.Tweening;
+using PrimeTween;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using Tween = PrimeTween.Tween;
 
 [DisallowMultipleComponent]
 public class PlayerAction : MonoBehaviour
@@ -160,12 +162,12 @@ public class PlayerAction : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.Alpha1))
                 {
-                    SwitchingWeapon(0);
+                    //SwitchingWeapon(0);
                     return;
                 }
                 if (Input.GetKey(KeyCode.Alpha2))
                 {
-                    SwitchingWeapon(1);
+                    //SwitchingWeapon(1);
                     return;
                 }
 
@@ -175,7 +177,7 @@ public class PlayerAction : MonoBehaviour
 
                     if (Input.GetKey(KeyCode.R) && !reloading && gunSelector.activeGun.currentAmmo < gunSelector.activeGun.maxAmmo)
                     {
-                        Reloading();
+                        Reloadin();
                         return;
                     }
 
@@ -209,7 +211,7 @@ public class PlayerAction : MonoBehaviour
         aimRig.weight = aimlerp;
         mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFov, 15 * Time.deltaTime);
     }
-
+    /*
     private void SwitchingWeapon(int i)
     {
         if (currentRigId != i)
@@ -264,14 +266,60 @@ public class PlayerAction : MonoBehaviour
             });
         }
     }
+    */
 
-    private void Reloading()
+    private void Reloadin()
     {
         reloading = true;
         targetRig = 0;
         targetFov = defaultFov;
 
-        Debug.Log("NAMEE = " + gunSelector.activeGunTransform.name);
+        Vector3 magInitPos = gunSelector.weaponIKGrips.magazineTransform.localPosition;
+        PrimeTween.Sequence.Create()
+            .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.1f, gunSelector.activeGunTransform.localPosition.z + 0.05f), 0.2f, PrimeTween.Ease.Linear)
+            .Group(Tween.Custom(0, 1, 0.2f, x => reloadRig[currentRigId].weight = x))
+            .Group(Tween.LocalPosition(gunSelector.reloadArm, gunSelector.weaponIKGrips.magazine.transform.localPosition, 0.2f, PrimeTween.Ease.Linear).OnComplete(this, x =>
+            {
+                gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.reloadArm); //grab mag
+                gunSelector.activeGun.audioConfig.PlayEmptyClip();
+                Vector3 armPath = new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.021f, gunSelector.activeGunTransform.localPosition.z);
+                Vector3 curPos = gunSelector.activeGunTransform.localPosition;
+                Tween.LocalPosition(gunSelector.activeGunTransform, armPath, 0.15f, PrimeTween.Ease.OutQuad, 1, PrimeTween.CycleMode.Incremental, 0.09f).OnComplete(this, x =>
+                {
+                    Tween.LocalPosition(gunSelector.activeGunTransform, curPos, 0.2f, PrimeTween.Ease.Linear);
+                });
+                Tween.LocalPosition(gunSelector.reloadArm, reloadArmDest.transform.localPosition, 0.2f, PrimeTween.Ease.InQuint).OnComplete(this, x =>
+                {
+                    Tween.LocalPosition(gunSelector.reloadArm, gunSelector.weaponIKGrips.magazine.transform.localPosition, 0.2f, PrimeTween.Ease.OutSine, 1, CycleMode.Incremental, 0.8f).OnComplete(this, x =>
+                    {
+                        gunSelector.weaponIKGrips.magazineTransform.SetParent(gunSelector.activeGunTransform); //put mag
+                        gunSelector.activeGun.audioConfig.PlayReloadClip();
+                        gunSelector.weaponIKGrips.magazineTransform.localPosition = magInitPos;
+                        gunSelector.activeGun.currentAmmo = gunSelector.activeGun.maxAmmo;
+                        currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+                        Tween.LocalPosition(gunSelector.activeGunTransform, new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y + 0.01f, gunSelector.activeGunTransform.localPosition.z), 0.2f, PrimeTween.Ease.OutCubic, 2, CycleMode.Yoyo);
+                    });
+                });
+            }))
+            .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation.eulerAngles, new Vector3(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), 0.8f, PrimeTween.Ease.OutQuint))
+            .ChainDelay(1f)
+            .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))          
+            .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, new Vector3(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), new Vector3(gunSelector.initRot.eulerAngles.x, gunSelector.initRot.eulerAngles.y, gunSelector.initRot.eulerAngles.z), 0.3f, PrimeTween.Ease.OutQuad))
+            .Group(Tween.Custom(1, 0, 0.4f, x => reloadRig[currentRigId].weight = x))
+            .OnComplete(this, x =>
+            {
+                reloading = false;
+                gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
+                gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
+            }));
+
+    }
+    /*
+    private void Reloading()
+    {
+        reloading = true;
+        targetRig = 0;
+        targetFov = defaultFov;
 
         Vector3 magInitPos = gunSelector.weaponIKGrips.magazineTransform.localPosition;
 
@@ -311,7 +359,7 @@ public class PlayerAction : MonoBehaviour
         }));
 
         s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(Quaternion.Euler(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), 0.8f).SetEase(Ease.OutQuint)).PrependInterval(0.1f);
-        s.AppendInterval(0.8f);
+        s.AppendInterval(0.8f);,
         s.Append(gunSelector.activeGunTransform.DOLocalMove(gunpaths[1], 0.4f));
         s.Join(gunSelector.activeGunTransform.DOLocalRotateQuaternion(gunSelector.initRot, 0.4f).SetEase(Ease.OutQuad));
         s.Join(DOVirtual.Float(1, 0, 0.4f, x => reloadRig[currentRigId].weight = x));
@@ -323,6 +371,7 @@ public class PlayerAction : MonoBehaviour
         });
         s.Play();
     }
+    */
 
     private IEnumerator AbilityRecharge(int abilitySlot)
     {

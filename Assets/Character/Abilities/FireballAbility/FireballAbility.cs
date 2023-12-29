@@ -51,6 +51,8 @@ public class FireballAbility : MonoBehaviour, IAbility
     public float radius = 3;
     public float speed = 2;
 
+    public float force = 2000;
+
     [SerializeField]
     private LayerMask layers;
 
@@ -103,6 +105,7 @@ public class FireballAbility : MonoBehaviour, IAbility
             activeFireball.radius = radius;
             activeFireball.maxFlightTime = duration;
             activeFireball.speed = speed;       
+            activeFireball.force = force;
         }    
     }
 

@@ -13,7 +13,7 @@ public interface IDamageable
     public delegate void DeathEvent(Vector3 position);
     public event DeathEvent onDeath;
 
-    public void Damage(int damage, Vector3 position);
+    public void Damage(int damage, float force, Vector3 position, Vector3 direction);
 
     public DamageText DamageText { get; }
 }

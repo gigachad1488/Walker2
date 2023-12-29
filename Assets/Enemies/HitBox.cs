@@ -8,8 +8,13 @@ public class HitBox : MonoBehaviour
 
     public EnemyHealth health;
 
-    public void OnHit(int damage, Vector3 point)
+    public void OnHit(int damage, float force, Vector3 point, Vector3 direction)
     {
-        health.Damage(damage * mult, point);
+        health.Damage(damage * mult, force, point, direction);
+    }
+
+    public void OnHit(int damage, float force, Vector3 point, Vector3 direction, int mult)
+    {
+        health.Damage(damage * mult, force, point, direction);
     }
 }

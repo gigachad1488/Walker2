@@ -61,6 +61,6 @@ public class Ragdoll : MonoBehaviour
             item.isKinematic = false;
         }
 
-        animator.enabled = false;
+        animator.enabled = false;       
     }
 }

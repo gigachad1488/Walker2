@@ -44,13 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841d964e9d3abe345b421feedaf6c953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 50
+  value: 150
   duration: 5
   cd: 2
   abilityParticlesPrefab: {fileID: 6727757527364349325, guid: f014852c19101a64da4d8e8bb3f99d1e,
     type: 3}
   radius: 3
-  speed: 30
+  speed: 35
+  force: 2000
   layers:
     serializedVersion: 2
     m_Bits: 55

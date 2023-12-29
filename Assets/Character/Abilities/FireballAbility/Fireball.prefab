@@ -9840,6 +9840,7 @@ MonoBehaviour:
   speed: 0
   radius: 0
   maxFlightTime: 0
+  force: 0
   explodeParticles: {fileID: 1379791819556143259}
 --- !u!135 &7871375499993383645
 SphereCollider:
@@ -9856,11 +9857,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &4628751521069295272
 ParticleSystem:
@@ -14696,7 +14697,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!1 &8243739673084587993
 GameObject:
   m_ObjectHideFlags: 0

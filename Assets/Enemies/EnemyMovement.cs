@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     public NavMeshAgent agent;
 
-    private Animator animator;
+    public Animator animator;
 
     public float timeForCheck = 0.5f;
 

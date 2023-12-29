@@ -365,7 +365,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
+      scalar: 0.8
       minScalar: 0.02
       maxCurve:
         serializedVersion: 2
@@ -419,7 +419,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 0, b: 0.69411767, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.1764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -483,7 +483,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 0.2
       minScalar: 2.15
       maxCurve:
         serializedVersion: 2
@@ -1571,9 +1571,9 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.99215686, b: 0.43529412, a: 1}
-        key1: {r: 1, g: 0.98039216, b: 0.23529412, a: 1}
-        key2: {r: 1, g: 0.18431373, b: 0, a: 0}
+        key0: {r: 1, g: 0.99215686, b: 0.43529412, a: 0.6039216}
+        key1: {r: 1, g: 0.98039216, b: 0.23529412, a: 0.25882354}
+        key2: {r: 1, g: 0.18431373, b: 0, a: 0.1882353}
         key3: {r: 1, g: 0.43529412, b: 0, a: 0}
         key4: {r: 1, g: 0.43529412, b: 0, a: 0}
         key5: {r: 1, g: 0, b: 0, a: 0}
@@ -1596,7 +1596,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 4
         m_NumAlphaKeys: 3
       minGradient:
@@ -5748,10 +5748,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3248211697463002607}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7590017139495149105}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}
@@ -5781,6 +5777,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2784109507862688697}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4349da5f501a88d41adc2fde2196bf78,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3248211697463002607}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4349da5f501a88d41adc2fde2196bf78,
         type: 3}

@@ -40,7 +40,7 @@ public class GunSO : ScriptableObject
     {
         activeMB = activemb;
         lastShootTime = 0;
-        //trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
+        trailPool = new ObjectPool<TrailRenderer>(CreateTrail);
         hitPool = new ObjectPool<GameObject>(CreateHit);
         model = Instantiate(modelPrefab);
         model.transform.SetParent(parent, false);
@@ -71,17 +71,15 @@ public class GunSO : ScriptableObject
 
                 if (hit.transform.TryGetComponent<HitBox>(out HitBox hitbox))
                 {
-                    hitbox.OnHit(damageConfig.GetDamage(), hit.point);
+                    hitbox.OnHit(damageConfig.GetDamage(), damageConfig.force, hit.point, shootDirection);
                 }
             }
-            //activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
+            activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, hit.point, hit));
         }
-        /*
         else
         {
             activeMB.StartCoroutine(PlayTrail(shootSystem.transform.position, shootSystem.transform.position + (shootDirection * trailConfig.missDistance), new RaycastHit()));
         }
-        */
     }
 
     private IEnumerator PlayHit(RaycastHit hit)
@@ -124,15 +122,17 @@ public class GunSO : ScriptableObject
         instance.gameObject.SetActive(false);
         trailPool.Release(instance);
 
+        /*
         if (hit.point != null && hit.collider != null)
         {
             activeMB.StartCoroutine(PlayHit(hit));
 
             if (hit.transform.TryGetComponent<IDamageable>(out IDamageable damageable))
             {
-                damageable.Damage(damageConfig.GetDamage(), hit.point);
+                //damageable.Damage(damageConfig.GetDamage(), damageConfig.force, hit.point);
             }
         }
+        */
     }
 
     private GameObject CreateHit()

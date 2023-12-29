@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: RIfleDamage
   m_EditorClassIdentifier: 
   damageRange: {x: 15, y: 25}
+  force: 700
