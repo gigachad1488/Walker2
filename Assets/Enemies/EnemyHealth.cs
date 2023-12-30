@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {

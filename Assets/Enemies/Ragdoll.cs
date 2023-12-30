@@ -59,8 +59,8 @@ public class Ragdoll : MonoBehaviour
         foreach (Rigidbody item in rigidbodies)
         {
             item.isKinematic = false;
+            item.drag = 1.3f;
         }
-
         animator.enabled = false;       
     }
 }

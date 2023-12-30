@@ -19,6 +19,7 @@ public class EnemyChaseState : EnemyState
         player = enemy.aggroedPlayer;
         
         enemy.agent.speed = moveSpeed;
+        enemy.agent.isStopped = false;
     }
 
     public override void ExitState()
@@ -32,6 +33,7 @@ public class EnemyChaseState : EnemyState
 
         if (enemy.IsWithinStrikingDistance)
         {
+            enemy.agent.isStopped = true;
             enemy.stateMachine.ChangeState(enemy.attackState);
             return;
         }

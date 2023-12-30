@@ -19,6 +19,9 @@ public class GunSO : ScriptableObject
     public Vector3 spawnPoint;
     public Vector3 spawnRotation;
     public DamageConfigurationSO damageConfig;
+    [SerializeField]
+    private ShootConfigurationSO shootConfigSO;
+    [HideInInspector]
     public ShootConfigurationSO shootConfig;
     public TrailConfigurationSO trailConfig;
     public AudioConfigSO audioConfig;
@@ -38,6 +41,7 @@ public class GunSO : ScriptableObject
 
     public void Spawn(Transform parent, MonoBehaviour activemb)
     {
+        shootConfig = Instantiate(shootConfigSO);
         activeMB = activemb;
         lastShootTime = 0;
         trailPool = new ObjectPool<TrailRenderer>(CreateTrail);

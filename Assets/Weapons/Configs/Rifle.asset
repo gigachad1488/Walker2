@@ -15,13 +15,14 @@ MonoBehaviour:
   type: 0
   name: Rifle
   maxAmmo: 40
-  currentAmmo: 0
+  currentAmmo: 23
   modelPrefab: {fileID: 5937749602348232249, guid: 694a0575ac63ea54abedb6b4bd34f613,
     type: 3}
   spawnPoint: {x: 0.15, y: -0.138, z: 0.4045}
   spawnRotation: {x: 0, y: 90, z: 0}
   damageConfig: {fileID: 11400000, guid: 117b9c11d3804c94a8e38bb57e578aaf, type: 2}
-  shootConfig: {fileID: 11400000, guid: d27938e543ab0664f97625936b36d358, type: 2}
+  shootConfigSO: {fileID: 11400000, guid: d27938e543ab0664f97625936b36d358, type: 2}
+  shootConfig: {fileID: 0}
   trailConfig: {fileID: 11400000, guid: 7e974ec0e73ff5347aed5c8f0e8cf6ae, type: 2}
   audioConfig: {fileID: 11400000, guid: ea664e3dd76bec64cb3b4a9975807ca5, type: 2}
   damageTextPrefab: {fileID: 5108297406719154002, guid: d7265f00ba081324687e64aa3d5d2a91,
