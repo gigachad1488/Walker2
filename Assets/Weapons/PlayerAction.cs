@@ -134,7 +134,7 @@ public class PlayerAction : MonoBehaviour
                     targetFov = defaultFov;
                     abilityTargetRig = 1;
                     targetRig = 0;
-                    recoil.aim = false;                  
+                    recoil.aim = false;
                     ability2 = true;
                 }
                 else if (abilityRig.weight >= 0.9f)
@@ -151,7 +151,7 @@ public class PlayerAction : MonoBehaviour
             }
         }
 
-        skipability:
+    skipability:
 
         abilityRig.weight = Mathf.Lerp(abilityRig.weight, abilityTargetRig, 10 * Time.deltaTime);
         abilitySwitchCD -= Time.deltaTime;
@@ -162,12 +162,12 @@ public class PlayerAction : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.Alpha1))
                 {
-                    //SwitchingWeapon(0);
+                    SwitchinWeapon(0);
                     return;
                 }
                 if (Input.GetKey(KeyCode.Alpha2))
                 {
-                    //SwitchingWeapon(1);
+                    SwitchinWeapon(1);
                     return;
                 }
 
@@ -210,6 +210,59 @@ public class PlayerAction : MonoBehaviour
         float aimlerp = Mathf.Lerp(aimRig.weight, targetRig, 15 * Time.deltaTime);
         aimRig.weight = aimlerp;
         mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFov, 15 * Time.deltaTime);
+    }
+
+    private void SwitchinWeapon(int i)
+    {
+        if (currentRigId != i)
+        {
+            switching = true;
+            targetRig = 0;
+            targetFov = defaultFov;
+            recoil.aim = false;
+            Quaternion tq = Quaternion.Euler(0, -20, 0);
+            PrimeTween.Sequence.Create()
+                .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.5f)).OnComplete(this, x =>
+                {
+                    Vector3 prevt = gunSelector.activeGunTransform.localPosition;
+                    aimRig.weight = 0;
+                    armRig.weight = 0;
+                    reloadRig[currentRigId].weight = 0;
+                    handRig[currentRigId].weight = 0;
+                    switchingRig[currentRigId].weight = 0;
+                    gunSelector.SwitchWeapon(i);
+                    handRig[i].weight = 1;
+                    gunSelector.activeGunTransform.localPosition = prevt;
+                    gunSelector.activeGunTransform.localEulerAngles = new Vector3(gunSelector.initRot.eulerAngles.x, gunSelector.initRot.eulerAngles.y - 20, gunSelector.initRot.eulerAngles.z);
+                    currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+                    maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
+                    Debug.Log(gunSelector.activeGunTransform.localRotation.eulerAngles);
+                    currentRigId = i;
+                })
+                .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation.eulerAngles, new Vector3(gunSelector.activeGunTransform.localRotation.eulerAngles.x, gunSelector.activeGunTransform.localRotation.eulerAngles.y - 20, gunSelector.activeGunTransform.localRotation.eulerAngles.z), 0.5f, PrimeTween.Ease.OutQuint))
+                .Group(Tween.Custom(0, 1, 0.4f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
+                .Group(Tween.Custom(1, 0, 0.6f, x => armRig.weight = x)
+                .OnComplete(this, x =>
+                {
+                    PrimeTween.Sequence.Create()
+                    .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))
+                    .Group(Tween.LocalRotation(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation, gunSelector.initRot, 0.4f, PrimeTween.Ease.OutQuad))
+                    .Group(Tween.Custom(1, 0, 0.2f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
+                    .Group(Tween.Custom(0, 1, 0.4f, x => armRig.weight = x))
+                    .OnComplete(this, x =>
+                    {
+                        gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
+                        gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
+                        armRig.weight = 1;
+                        switching = false;
+
+                        recoil.recoilX = gunSelector.activeGun.shootConfig.spread.x;
+                        recoil.recoilY = gunSelector.activeGun.shootConfig.spread.y;
+                        recoil.recoilZ = gunSelector.activeGun.shootConfig.spread.z;
+                        recoil.kickBackZ = gunSelector.activeGun.shootConfig.kickBack;
+                    });
+                })).timeScale = 1.3f;
+        }
     }
     /*
     private void SwitchingWeapon(int i)
@@ -273,6 +326,7 @@ public class PlayerAction : MonoBehaviour
         reloading = true;
         targetRig = 0;
         targetFov = defaultFov;
+        recoil.aim = false;
 
         Vector3 magInitPos = gunSelector.weaponIKGrips.magazineTransform.localPosition;
         PrimeTween.Sequence.Create()
@@ -303,7 +357,7 @@ public class PlayerAction : MonoBehaviour
             }))
             .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation.eulerAngles, new Vector3(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), 0.8f, PrimeTween.Ease.OutQuint))
             .ChainDelay(1f)
-            .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))          
+            .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))
             .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, new Vector3(gunSelector.initRot.eulerAngles.x + 10, gunSelector.initRot.eulerAngles.y, -23), new Vector3(gunSelector.initRot.eulerAngles.x, gunSelector.initRot.eulerAngles.y, gunSelector.initRot.eulerAngles.z), 0.3f, PrimeTween.Ease.OutQuad))
             .Group(Tween.Custom(1, 0, 0.4f, x => reloadRig[currentRigId].weight = x))
             .OnComplete(this, x =>
@@ -381,12 +435,12 @@ public class PlayerAction : MonoBehaviour
 
         Image abilityImage = ability1UI;
 
-        if (abilitySlot == 0) 
+        if (abilitySlot == 0)
         {
             abilityImage = ability1UI;
             cd = ability1CD;
         }
-        else if (abilitySlot == 1) 
+        else if (abilitySlot == 1)
         {
             abilityImage = ability2UI;
             cd = ability2CD;

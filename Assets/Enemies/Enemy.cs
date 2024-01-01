@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(HealthBar))]
 [RequireComponent(typeof(EnemyHealth))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour, ITriggerCheckable
@@ -26,6 +27,8 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
     public EnemyAttackState attackState;
     public EnemyState noState;
 
+    public HealthBar healthBar;
+
     public float movementRange = 5;
     public float speed = 2f;
 
@@ -36,6 +39,8 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
 
     private void Awake()
     {
+        healthBar = GetComponent<HealthBar>();
+
         gun = Instantiate(gunSO);
 
         health = GetComponent<EnemyHealth>();
@@ -55,12 +60,19 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
 
     private void Start()
     {
+        healthBar.Visible(false);
         stateMachine.Initialize(idleState);
     }
 
     private void Update()
     {
         stateMachine.CurrentEnemyState.FrameUpdate();
+
+        if (aggroedPlayer != null) 
+        {
+            healthBar.Visible(true);
+            health.transform.LookAt(aggroedPlayer.transform);
+        }
     }
 
     public void AnimationTriggerEvent(AnimationTriggerType type)
