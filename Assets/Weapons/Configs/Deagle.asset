@@ -23,7 +23,9 @@ MonoBehaviour:
   damageConfig: {fileID: 11400000, guid: d25eb3177c9ec534bb5748459a00228a, type: 2}
   shootConfigSO: {fileID: 11400000, guid: 71d5054265b2efa4bb42b42baaf14070, type: 2}
   shootConfig: {fileID: 0}
+  trailConfigSO: {fileID: 11400000, guid: d3594c8718addff4fbfcfca590775fe9, type: 2}
   trailConfig: {fileID: 11400000, guid: d3594c8718addff4fbfcfca590775fe9, type: 2}
+  audioConfigSO: {fileID: 11400000, guid: 37a5d9c3fb9280f418d5b440b6782ce7, type: 2}
   audioConfig: {fileID: 11400000, guid: 37a5d9c3fb9280f418d5b440b6782ce7, type: 2}
   damageTextPrefab: {fileID: 5108297406719154002, guid: d7265f00ba081324687e64aa3d5d2a91,
     type: 3}

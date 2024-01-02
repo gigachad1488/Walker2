@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f29acce11d9af40979508e690fa76d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 15
+  value: 10
   duration: 0
-  cd: 0.5
+  cd: 8
   abilityParticlesPrefab: {fileID: 174544582612277082, guid: f18c5cfdc0c9b834a9c6f7c6ad0c7bfb,
     type: 3}
   layers:

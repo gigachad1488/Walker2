@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9270f0ef79e04ea489d3b2a64f646953, type: 3}
   m_Name: RIfleDamage
   m_EditorClassIdentifier: 
-  damageRange: {x: 15, y: 25}
+  damageRange: {x: 25, y: 35}
   force: 700

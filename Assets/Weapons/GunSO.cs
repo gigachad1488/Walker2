@@ -23,8 +23,17 @@ public class GunSO : ScriptableObject
     private ShootConfigurationSO shootConfigSO;
     [HideInInspector]
     public ShootConfigurationSO shootConfig;
+
+    [SerializeField]
+    private TrailConfigurationSO trailConfigSO;
+    [HideInInspector]
     public TrailConfigurationSO trailConfig;
+
+    [SerializeField]
+    private AudioConfigSO audioConfigSO;
+    [HideInInspector]
     public AudioConfigSO audioConfig;
+
     public DamageText damageTextPrefab;
 
     public GameObject hitPrefab;
@@ -42,6 +51,8 @@ public class GunSO : ScriptableObject
     public void Spawn(Transform parent, MonoBehaviour activemb)
     {
         shootConfig = Instantiate(shootConfigSO);
+        audioConfig = Instantiate(audioConfigSO);
+        trailConfig = Instantiate(trailConfigSO);
         activeMB = activemb;
         lastShootTime = 0;
         trailPool = new ObjectPool<TrailRenderer>(CreateTrail);

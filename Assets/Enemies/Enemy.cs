@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
     public EnemyState noState;
 
     public HealthBar healthBar;
+    public Canvas canvas;
 
     public float movementRange = 5;
     public float speed = 2f;
@@ -51,11 +52,26 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
         chaseState = new EnemyChaseState(this, stateMachine);
         attackState = new EnemyAttackState(this, stateMachine);
         noState = new EnemyState(this, stateMachine);
+        canvas.gameObject.SetActive(false);
 
         gun.Spawn(gunParent, this);
         gun.shootConfig.hitMask = hitMask;
 
         health.onDeath += OnDeath;
+        health.onTakeDamage += OnDamage;
+
+        healthBar.Set(1, 1);
+    }
+
+    private void OnDamage(int damage, Vector3 position)
+    {
+        healthBar.Change(health.CurrentHealth / (float)health.MaxHealth);
+
+        if (!aggroedPlayer)
+        {
+            aggroedPlayer = LevelManager.instance.player.transform;
+            stateMachine.ChangeState(chaseState);
+        }
     }
 
     private void Start()
@@ -71,7 +87,8 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
         if (aggroedPlayer != null) 
         {
             healthBar.Visible(true);
-            health.transform.LookAt(aggroedPlayer.transform);
+            canvas.gameObject.SetActive(true);
+            canvas.transform.LookAt(aggroedPlayer.transform);
         }
     }
 
@@ -84,6 +101,8 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
     {
         agent.isStopped = true;
         stateMachine.ChangeState(noState);
+        canvas.gameObject.SetActive(false);
+        this.enabled = false;
     }
 
 }

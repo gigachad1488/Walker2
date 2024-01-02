@@ -76,6 +76,9 @@ public class PlayerAction : MonoBehaviour
 
     private float lastShootTime = 0;
 
+    private KeyCode ab1Input = KeyCode.None;
+    private KeyCode ab2Input = KeyCode.None;
+
     private void Start()
     {
         reloadRig[currentRigId].weight = 0;
@@ -93,9 +96,17 @@ public class PlayerAction : MonoBehaviour
         maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
 
         currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
+        if (abilityManager1.ability != null)
+        {
+            ab1Input = KeyCode.Q;
+            abilityManager1.SetUi(ability1UI);
+        }
 
-        abilityManager1.SetUi(ability1UI);
-        abilityManager2.SetUi(ability2UI);
+        if (abilityManager2.ability != null)
+        {
+            ab2Input = KeyCode.E;
+            abilityManager2.SetUi(ability2UI);
+        }
     }
 
     private void Update()
@@ -104,7 +115,7 @@ public class PlayerAction : MonoBehaviour
         {
             if (!ability2 && ability1CD <= 0)
             {
-                if (Input.GetKey(KeyCode.Q))
+                if (Input.GetKey(ab1Input))
                 {
                     abilityManager1.ShowAbilityIndicator();
                     targetFov = defaultFov;
@@ -128,7 +139,7 @@ public class PlayerAction : MonoBehaviour
 
             if (!ability1 && ability2CD <= 0)
             {
-                if (Input.GetKey(KeyCode.E))
+                if (Input.GetKey(ab2Input))
                 {
                     abilityManager2.ShowAbilityIndicator();
                     targetFov = defaultFov;

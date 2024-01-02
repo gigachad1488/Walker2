@@ -11,6 +11,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private int currentHealth;
     [HideInInspector]
     public HealthBar healthBar;
+
+    private bool died = false;
     public int CurrentHealth
     {
         get
@@ -40,10 +42,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     }
 
     public void Damage(int damage, float force, Vector3 position, Vector3 direction)
-    {
-        
+    {      
         currentHealth -= damage;
-        Debug.Log(currentHealth);
         healthBar.Change((float)currentHealth / (float)maxHealth);
+
+        if (currentHealth <= 0 && !died)
+        {
+            onDeath?.Invoke(transform.position);
+            died = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 }

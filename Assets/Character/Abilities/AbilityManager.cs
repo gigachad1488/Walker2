@@ -20,21 +20,31 @@ public class AbilityManager : MonoBehaviour
 
     private bool canFire = true;
 
-    private IAbility ability;
+    public IAbility ability;
 
     public float cd;
 
     private void Awake()
     {
-        GameObject abl = Instantiate(abilityPrefab, transform);
-        SetAbility(abl.GetComponent<IAbility>());
+        if (abilityPrefab != null)
+        {
+            GameObject abl = Instantiate(abilityPrefab, transform);
+            SetAbility(abl.GetComponent<IAbility>());
+        }
+        else
+        {
+
+        }
     }
 
     public void SetAbility(IAbility ability)
     {
-        ability.SetPlayer(player, abilityHand, uiCanvas);
-        this.ability = ability;
-        cd = ability.Cd;
+        if (abilityPrefab != null)
+        {
+            ability.SetPlayer(player, abilityHand, uiCanvas);
+            this.ability = ability;
+            cd = ability.Cd;
+        }
     }
 
     public void FireAbility()

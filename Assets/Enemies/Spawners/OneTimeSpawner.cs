@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class OneTimeSpawner : MonoBehaviour
 {
-    public List<EnemyMovement> enemies = new List<EnemyMovement>();
+    public List<GameObject> enemies = new List<GameObject>();
 
     public Transform player;
 
@@ -14,7 +14,6 @@ public class OneTimeSpawner : MonoBehaviour
         GetComponent<Collider>().isTrigger = true;
         foreach (var enemy in enemies) 
         {
-            enemy.player = player;
             enemy.gameObject.SetActive(false);
         }
     }

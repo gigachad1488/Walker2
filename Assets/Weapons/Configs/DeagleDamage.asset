@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9270f0ef79e04ea489d3b2a64f646953, type: 3}
   m_Name: DeagleDamage
   m_EditorClassIdentifier: 
-  damageRange: {x: 70, y: 90}
+  damageRange: {x: 75, y: 100}
   force: 1200
