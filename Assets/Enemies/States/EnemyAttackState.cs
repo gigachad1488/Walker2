@@ -40,7 +40,7 @@ public class EnemyAttackState : EnemyState
         Quaternion lookRot = Quaternion.LookRotation(enemy.aggroedPlayer.position - enemy.checkPosition.position);
         enemy.transform.eulerAngles = new Vector3(0, lookRot.eulerAngles.y, 0);
 
-        if (raycastTimer <= 0)
+        if (raycastTimer <= 0f)
         {
             if (Physics.Raycast(enemy.checkPosition.position, (enemy.aggroedPlayer.position - enemy.checkPosition.position).normalized, out RaycastHit hit, 999f, enemy.checkLayer))
             {
@@ -58,7 +58,7 @@ public class EnemyAttackState : EnemyState
             exitTime = 3f;
         }
 
-        if (exitTime <= 0)
+        if (exitTime <= 0f)
         {
             enemy.stateMachine.ChangeState(enemy.chaseState);
             return;
@@ -71,7 +71,7 @@ public class EnemyAttackState : EnemyState
 
         if (enemy.gun.currentAmmo > 0)
         {
-            if (fireTimer <= 0)
+            if (fireTimer <= 0f)
             {
                 enemy.gunParent.eulerAngles = new Vector3(lookRot.eulerAngles.x + Random.Range(-2f, 2f), lookRot.eulerAngles.y + Random.Range(-2f, 2f), lookRot.eulerAngles.z);
                 enemy.gun.Shoot();
@@ -79,12 +79,12 @@ public class EnemyAttackState : EnemyState
                 enemy.gun.currentAmmo--;
             }
         }
-        else if (reloadTimer <= 0 && !reloading)
+        else if (reloadTimer <= 0f && !reloading)
         {
             reloadTimer = 3f;
             reloading = true;
         }
-        else if (reloadTimer <= 0 && reloading)
+        else if (reloadTimer <= 0f && reloading)
         {
             enemy.gun.currentAmmo = enemy.gun.maxAmmo;
             reloading = false;
