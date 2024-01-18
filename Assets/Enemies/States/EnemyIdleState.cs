@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class EnemyIdleState : EnemyState
 {
     private Vector3 targetPosition;
     private Vector3 direction;
+    private float raycastTimer;
 
     private float afkTime = 2f;
 
@@ -18,6 +20,7 @@ public class EnemyIdleState : EnemyState
         base.EnterState();
 
         enemy.agent.speed = enemy.speed;
+        raycastTimer = 0f;
 
         ChangeDestination();
     }
@@ -31,13 +34,25 @@ public class EnemyIdleState : EnemyState
     {
         base.FrameUpdate();
 
-        if (enemy.IsAggroed)
+        if (enemy.IsAggroed && raycastTimer <= 0f)
         {
-            enemy.stateMachine.ChangeState(enemy.chaseState);
+            if (Physics.Raycast(enemy.checkPosition.position, (enemy.aggroedPlayer.position - enemy.checkPosition.position).normalized, out RaycastHit hit, 999f, enemy.checkLayer))
+            {
+                Debug.Log("HITT = " + hit.collider.tag);
+                if (hit.collider.CompareTag("Player")) 
+                {
+                    enemy.stateMachine.ChangeState(enemy.chaseState);
+                }             
+            }
+
+            raycastTimer = 2f;
+
             return;
         }
 
         afkTime -= Time.deltaTime;
+        raycastTimer -= Time.deltaTime;
+
         if (afkTime <= 0)
         {
             if ((enemy.agent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathComplete && enemy.agent.remainingDistance <= enemy.agent.stoppingDistance && !enemy.agent.pathPending) || enemy.agent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)

@@ -10,6 +10,8 @@ public class EnemyAttackState : EnemyState
 
     private float reloadTimer;
     private bool reloading;
+
+    private float raycastTimer;
     public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
     }
@@ -23,6 +25,8 @@ public class EnemyAttackState : EnemyState
         reloadTimer = 3f;
         enemy.gun.currentAmmo = enemy.gun.maxAmmo;
         reloading = false;
+
+        raycastTimer = 2f;
     }
 
     public override void ExitState()
@@ -33,9 +37,21 @@ public class EnemyAttackState : EnemyState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-        Quaternion lookRot = Quaternion.LookRotation(enemy.aggroedPlayer.position - enemy.transform.position);
+        Quaternion lookRot = Quaternion.LookRotation(enemy.aggroedPlayer.position - enemy.checkPosition.position);
         enemy.transform.eulerAngles = new Vector3(0, lookRot.eulerAngles.y, 0);
-        
+
+        if (raycastTimer <= 0)
+        {
+            if (Physics.Raycast(enemy.checkPosition.position, (enemy.aggroedPlayer.position - enemy.checkPosition.position).normalized, out RaycastHit hit, 999f, enemy.checkLayer))
+            {
+                if (!hit.collider.CompareTag("Player"))
+                {
+                    enemy.stateMachine.ChangeState(enemy.chaseState);
+                }
+            }
+
+            raycastTimer = 2f;
+        }
 
         if (enemy.IsWithinStrikingDistance)
         {
@@ -48,6 +64,7 @@ public class EnemyAttackState : EnemyState
             return;
         }
 
+        raycastTimer -= Time.deltaTime;
         fireTimer -= Time.deltaTime;
         reloadTimer -= Time.deltaTime;
         exitTime -= Time.deltaTime;

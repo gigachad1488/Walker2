@@ -18,8 +18,7 @@ namespace Walker2.Controller
         [SerializeField]
         private Transform cameraRoot;
 
-        [SerializeField]
-        private Transform camera;
+        public Transform cameraHolder;
 
         [SerializeField]
         private float upperLimit = -40;
@@ -58,6 +57,8 @@ namespace Walker2.Controller
         private const float crouchSpeed = 2;
         private const float walkSpeed = 4;
         private const float runSpeed = 6;
+
+        public Transform center;
 
         private bool grounded = true;
 
@@ -143,12 +144,12 @@ namespace Walker2.Controller
             float mouseX = inputManager.Look.x;
             float mouseY = inputManager.Look.y;
 
-            camera.position = cameraRoot.position;
+            cameraHolder.position = cameraRoot.position;
 
             xRotation -= mouseY * mouseSens * Time.smoothDeltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
-            camera.localRotation = Quaternion.Euler(xRotation, 0, 0);
+            cameraHolder.localRotation = Quaternion.Euler(xRotation, 0, 0);
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * mouseSens * Time.smoothDeltaTime, 0));
         }
 

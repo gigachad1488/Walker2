@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Walker2.Controller;
 
@@ -17,7 +18,7 @@ public class EnemyAggroCheck : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            enemy.aggroedPlayer = other.GetComponentInParent<PlayerController>().transform;
+            enemy.aggroedPlayer = other.GetComponentInParent<PlayerController>().center;
             enemy.IsAggroed = true;          
         }
     }

@@ -34,6 +34,8 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
     public float speed = 2f;
 
     public Transform aggroedPlayer;
+    public LayerMask checkLayer;
+    public Transform checkPosition;
 
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
@@ -103,6 +105,15 @@ public class Enemy : MonoBehaviour, ITriggerCheckable
         stateMachine.ChangeState(noState);
         canvas.gameObject.SetActive(false);
         this.enabled = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (aggroedPlayer != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(checkPosition.position, (aggroedPlayer.position - checkPosition.position).normalized * 20);
+        }
     }
 
 }
