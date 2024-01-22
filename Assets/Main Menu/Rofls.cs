@@ -13,9 +13,6 @@ public class Rofls : MonoBehaviour
     private AudioSource source;
 
     [SerializeField]
-    private Light[] lights;
-
-    [SerializeField]
     private CanvasGroup buttonsCanvas;
 
     [SerializeField]
@@ -24,27 +21,21 @@ public class Rofls : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        Tween.LocalPositionX(sl.transform, 600, 17f);
+        sl.intensity = 0.02f;
         buttonsCanvas.alpha = 0f;
         source.time = 8f;
         yield return new WaitUntil(() => source.time >= 11.8f);
-        for (int i = 0; i < lights.Length; i++) 
-        {
 
-            lights[i].intensity = 2000f;
-            Tween.LightIntensity(lights[i], 73f, 2, Ease.OutQuad);                
-        }
+        sl.intensity = 2000f;
+        Tween.LightIntensity(sl, 4.5f, 2, Ease.OutQuad);
+
+        buttonsCanvas.gameObject.SetActive(true);
+        buttonsCanvas.interactable = false;
+    
+        Tween.Custom(0f, 1, 2.5f, x => buttonsCanvas.alpha = x, Ease.OutQuad);
 
         yield return new WaitForSeconds(1f);
 
-        for (int i = 0; i < lights.Length - 1; i++)
-        {
-
-            Tween.LightIntensity(lights[i], 0f, 0.5f);
-        }
-
-        Material mat = img.material;
-        Tween.Custom(0, 1, 5.5f, x => buttonsCanvas.alpha = x, Ease.OutQuad);
-        Tween.Custom(0, 10, 5.5f, x => mat.SetColor("_EmissionColor", Color.red * x));
+        buttonsCanvas.interactable = true;
     }
 }
