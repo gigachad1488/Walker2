@@ -49,7 +49,7 @@ MonoBehaviour:
   cd: 12
   abilityParticlesPrefab: {fileID: 6727757527364349325, guid: f014852c19101a64da4d8e8bb3f99d1e,
     type: 3}
-  radius: 4
+  radius: 6
   speed: 35
   force: 2500
   layers:

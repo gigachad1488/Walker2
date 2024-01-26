@@ -233,7 +233,11 @@ public class PlayerAction : MonoBehaviour
             recoil.aim = false;
             Quaternion tq = Quaternion.Euler(0, -20, 0);
             PrimeTween.Sequence.Create()
-                .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.5f)).OnComplete(this, x =>
+                .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, new Vector3(gunSelector.activeGunTransform.localPosition.x, gunSelector.activeGunTransform.localPosition.y - 0.3f, gunSelector.activeGunTransform.localPosition.z - 0.3f), 0.5f))
+                .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation.eulerAngles, new Vector3(gunSelector.activeGunTransform.localRotation.eulerAngles.x, gunSelector.activeGunTransform.localRotation.eulerAngles.y - 20, gunSelector.activeGunTransform.localRotation.eulerAngles.z), 0.5f, PrimeTween.Ease.OutQuint))
+                .Group(Tween.Custom(0, 1, 0.4f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
+                .Group(Tween.Custom(1, 0, 0.6f, x => armRig.weight = x))
+                .OnComplete(this, x =>
                 {
                     Vector3 prevt = gunSelector.activeGunTransform.localPosition;
                     aimRig.weight = 0;
@@ -244,35 +248,29 @@ public class PlayerAction : MonoBehaviour
                     gunSelector.SwitchWeapon(i);
                     handRig[i].weight = 1;
                     gunSelector.activeGunTransform.localPosition = prevt;
-                    gunSelector.activeGunTransform.localEulerAngles = new Vector3(gunSelector.initRot.eulerAngles.x, gunSelector.initRot.eulerAngles.y - 20, gunSelector.initRot.eulerAngles.z);
                     currentAmmoText.text = gunSelector.activeGun.currentAmmo.ToString();
                     maxAmmoText.text = gunSelector.activeGun.maxAmmo.ToString();
-                    Debug.Log(gunSelector.activeGunTransform.localRotation.eulerAngles);
+                    //Debug.Log(gunSelector.activeGunTransform.localRotation.eulerAngles);
                     currentRigId = i;
-                })
-                .Group(Tween.LocalEulerAngles(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation.eulerAngles, new Vector3(gunSelector.activeGunTransform.localRotation.eulerAngles.x, gunSelector.activeGunTransform.localRotation.eulerAngles.y - 20, gunSelector.activeGunTransform.localRotation.eulerAngles.z), 0.5f, PrimeTween.Ease.OutQuint))
-                .Group(Tween.Custom(0, 1, 0.4f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
-                .Group(Tween.Custom(1, 0, 0.6f, x => armRig.weight = x)
+
+                    UnSwitch();
+                });
+            
+            void UnSwitch()
+            {
+                PrimeTween.Sequence.Create()
+                .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))
+                .Group(Tween.LocalRotation(gunSelector.activeGunTransform, gunSelector.initRot * tq, gunSelector.initRot, 0.4f, PrimeTween.Ease.OutQuad))
+                .Group(Tween.Custom(1, 0, 0.2f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
+                .Group(Tween.Custom(0, 1, 0.4f, x => armRig.weight = x))
                 .OnComplete(this, x =>
                 {
-                    PrimeTween.Sequence.Create()
-                    .Chain(Tween.LocalPosition(gunSelector.activeGunTransform, gunSelector.initPos, 0.4f))
-                    .Group(Tween.LocalRotation(gunSelector.activeGunTransform, gunSelector.activeGunTransform.localRotation, gunSelector.initRot, 0.4f, PrimeTween.Ease.OutQuad))
-                    .Group(Tween.Custom(1, 0, 0.2f, x => switchingRig[currentRigId].weight = x, PrimeTween.Ease.Linear, 1, CycleMode.Restart, 0.2f))
-                    .Group(Tween.Custom(0, 1, 0.4f, x => armRig.weight = x))
-                    .OnComplete(this, x =>
-                    {
-                        gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
-                        gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
-                        armRig.weight = 1;
-                        switching = false;
-
-                        recoil.recoilX = gunSelector.activeGun.shootConfig.spread.x;
-                        recoil.recoilY = gunSelector.activeGun.shootConfig.spread.y;
-                        recoil.recoilZ = gunSelector.activeGun.shootConfig.spread.z;
-                        recoil.kickBackZ = gunSelector.activeGun.shootConfig.kickBack;
-                    });
-                })).timeScale = 1.3f;
+                    gunSelector.activeGunTransform.localPosition = gunSelector.initPos;
+                    gunSelector.activeGunTransform.localRotation = gunSelector.initRot;
+                    armRig.weight = 1;
+                    switching = false;
+                }).timeScale = 1.4f;
+        }
         }
     }
     /*

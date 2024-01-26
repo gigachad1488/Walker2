@@ -21,7 +21,7 @@ public class FireballUnit : MonoBehaviour
         GetComponent<Collider>().enabled = true;
         rb.constraints = RigidbodyConstraints.None;
         var mm = explodeParticles.main;
-        mm.startSize = radius * 0.5f;
+        mm.startSize = radius * 0.4f;
         rb.velocity = direction * speed;
         Invoke(nameof(Explode), maxFlightTime);
     }

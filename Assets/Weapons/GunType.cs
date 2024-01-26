@@ -3,5 +3,6 @@ public enum GunType
 {
     Rifle,
     Pistol,
-    Deagle
+    Deagle,
+    Glock
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 [DisallowMultipleComponent]
 public class PlayerGunSelector : MonoBehaviour
@@ -12,6 +13,9 @@ public class PlayerGunSelector : MonoBehaviour
 
     [SerializeField]
     private Transform gunParent;
+
+    [SerializeField]
+    private ProceduralRecoil recoil;
 
     [SerializeField]
     private List<GunSO> guns;
@@ -103,7 +107,12 @@ public class PlayerGunSelector : MonoBehaviour
             //activeGun.model.transform.localPosition = initPos;
             //activeGun.model.transform.localRotation = initRot;
 
-            reloadArm = weaponIKGrips.reloadAnimArm;           
+            reloadArm = weaponIKGrips.reloadAnimArm;
+
+            recoil.recoilX = activeGun.shootConfig.spread.x;
+            recoil.recoilY = activeGun.shootConfig.spread.y;
+            recoil.recoilZ = activeGun.shootConfig.spread.z;
+            recoil.kickBackZ = activeGun.shootConfig.kickBack;
         }
     }
 }

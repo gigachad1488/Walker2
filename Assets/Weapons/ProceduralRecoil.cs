@@ -45,8 +45,8 @@ public class ProceduralRecoil : MonoBehaviour
     {
         if (aim)
         {
-            targetPosition -= new Vector3(0, 0, kickBackZ * 0.2f);
-            targetRotation += new Vector3(-recoilX * 0.3f, Random.Range(-recoilY * 0.7f, recoilY * 0.7f), Random.Range(-recoilZ * 0.7f, recoilZ * 0.7f));
+            targetPosition -= new Vector3(0, 0, kickBackZ * 0.4f);
+            targetRotation += new Vector3(-recoilX * 0.1f, Random.Range(-recoilY * 0.8f, recoilY * 0.8f), Random.Range(-recoilZ * 0.8f, recoilZ * 0.8f));
         }
         else
         {

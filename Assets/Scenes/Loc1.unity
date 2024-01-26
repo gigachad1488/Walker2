@@ -726,10 +726,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 892461812}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 67.5, y: -75}
-  m_SizeDelta: {x: 0, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 67.5, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &66554123
 MonoBehaviour:
@@ -4800,10 +4800,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 892461812}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 232.5, y: -75}
-  m_SizeDelta: {x: 0, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 232.5, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &731014605
 MonoBehaviour:
@@ -35127,6 +35127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   gunParent: {fileID: 8588676565198259136}
+  recoil: {fileID: 8886326349803118918}
   guns:
   - {fileID: 11400000, guid: 1942c3d7f523c00479d1c92157dbe332, type: 2}
   - {fileID: 11400000, guid: 682731059f88fa94c92198acd4920e3a, type: 2}
