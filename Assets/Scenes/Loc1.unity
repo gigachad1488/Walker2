@@ -32831,7 +32831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 906082154454965155}
-  abilityPrefab: {fileID: 3671057138427286847, guid: 13a6a565433811a4ba28aae176c8fb33,
+  abilityPrefab: {fileID: 3730910799229142101, guid: 082cdaf7422a28f47b6c6336fae73e52,
     type: 3}
   abilityHand: {fileID: 1729278370691826061}
   uiCanvas: {fileID: 6221067999621259562}
@@ -35129,7 +35129,7 @@ MonoBehaviour:
   gunParent: {fileID: 8588676565198259136}
   recoil: {fileID: 8886326349803118918}
   guns:
-  - {fileID: 11400000, guid: 1942c3d7f523c00479d1c92157dbe332, type: 2}
+  - {fileID: 11400000, guid: 49e3a7d412f86aa4499e4286f3e116d5, type: 2}
   - {fileID: 11400000, guid: 682731059f88fa94c92198acd4920e3a, type: 2}
   activeGun: {fileID: 0}
   activeGunTransform: {fileID: 0}

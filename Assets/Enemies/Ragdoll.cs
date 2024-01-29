@@ -60,6 +60,7 @@ public class Ragdoll : MonoBehaviour
         {
             item.isKinematic = false;
             item.drag = 1.3f;
+            item.gameObject.layer = 0;
         }
         animator.enabled = false;       
     }

@@ -99,9 +99,11 @@ public class TeleportAbility : MonoBehaviour, IAbility
         {
             teleportIndicatorParticles = Instantiate(teleportIndicatorParticlesPrefab, transform.position, Quaternion.identity);
         }
+
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         ParticlesVisible(true);
+
         if (Physics.Raycast(ray, out hit, value, layers))
         {
             teleportIndicatorParticles.transform.position = hit.point + (hit.normal * 0.2f);
