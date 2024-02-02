@@ -23,6 +23,9 @@ public class TurretUnit : MonoBehaviour
     private LayerMask layers;
 
     [SerializeField]
+    private TurretBeam beamPrefab;
+
+    [SerializeField]
     private float force = 2000;
 
     private int damage = 20;
@@ -38,11 +41,7 @@ public class TurretUnit : MonoBehaviour
 
     public void Fire(RaycastHit hit, Vector3 direction)
     {
-        GameObject t = Instantiate(new GameObject(), shootPoint.position, Quaternion.identity);
-        LineRenderer laser = t.AddComponent<LineRenderer>();
-        laser.SetPosition(0, t.transform.position);
-        laser.SetPosition(1, hit.point);
-        t.AddComponent<DestroyOnTime>().time = 0.2f;
+        TurretBeam t = Instantiate(beamPrefab, shootPoint.position, Quaternion.LookRotation(direction));
 
         hit.transform.GetComponent<HitBox>().OnHit(damage, force, hit.point, direction);
     }

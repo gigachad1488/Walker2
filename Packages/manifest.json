@@ -20,6 +20,7 @@
     "com.unity.timeline": "1.8.6",
     "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.6",
     "com.unity.ugui": "2.0.0",
+    "com.unity.visualeffectgraph": "16.0.4",
     "com.unity.visualscripting": "1.8.0",
     "com.vanbassum.wakatime": "https://github.com/vanBassum/Wakatime.Unity.git",
     "moe.meryuhi.effects.fog": "https://github.com/meryuhi/URPFog.git?path=Packages/Fog",

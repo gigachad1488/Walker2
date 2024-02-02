@@ -4890,6 +4890,8 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 2049
+  beamPrefab: {fileID: 3223091344650510007, guid: 335b3727439da1048aedf99757a84137,
+    type: 3}
   force: 2000
 --- !u!1 &7302515182287732059
 GameObject:
