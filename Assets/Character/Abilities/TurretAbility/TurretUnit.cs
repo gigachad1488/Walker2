@@ -42,6 +42,9 @@ public class TurretUnit : MonoBehaviour
     public void Fire(RaycastHit hit, Vector3 direction)
     {
         TurretBeam t = Instantiate(beamPrefab, shootPoint.position, Quaternion.LookRotation(direction));
+        float distance = Vector3.Distance(t.transform.position, hit.point);
+
+        t.transform.localScale = new Vector3(1, 1, 1 * (distance * 6.3f * 0.01f));
 
         hit.transform.GetComponent<HitBox>().OnHit(damage, force, hit.point, direction);
     }
