@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Walker2.Controller;
 
 public class FireballAbility : MonoBehaviour, IAbility
 {

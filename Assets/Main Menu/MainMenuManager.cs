@@ -2,6 +2,7 @@ using PrimeTween;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Unity.VisualScripting.Member;
 
@@ -75,5 +76,10 @@ public class MainMenuManager : MonoBehaviour
         settingsCanvas.interactable = false;
         settingsCanvas.alpha = 0f;
         settingsCanvas.blocksRaycasts = false;
+    }
+
+    public async void StartNewGame()
+    {
+        await SceneManager.LoadSceneAsync("Loc1");
     }
 }

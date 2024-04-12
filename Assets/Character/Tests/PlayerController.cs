@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Walker2.Manager;
 
     public class PlayerController : MonoBehaviour
     {
@@ -34,9 +33,9 @@ using Walker2.Manager;
         [SerializeField]
         private LayerMask groundLayer;
 
-        private Rigidbody rb;
+        public Rigidbody rb;
 
-        private InputManager inputManager;
+        //private InputManager inputManager;
 
         private Animator animator;
         private bool hasAnimator;
@@ -65,7 +64,7 @@ using Walker2.Manager;
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
-            inputManager = GetComponent<InputManager>();
+            //inputManager = GetComponent<InputManager>();
             hasAnimator = TryGetComponent<Animator>(out animator);
 
             xVelocityHash = Animator.StringToHash("XVelocity");
@@ -99,6 +98,7 @@ using Walker2.Manager;
 
             float targetSpeed = 0;
 
+        /*
             if (inputManager.Run)
             {
                 targetSpeed = runSpeed;
@@ -130,6 +130,7 @@ using Walker2.Manager;
 
             animator.SetFloat(xVelocityHash, currentVelocity.x);
             animator.SetFloat(yVelocityHash, currentVelocity.y);
+        */
         }
 
         private void CameraMovement()
@@ -139,23 +140,23 @@ using Walker2.Manager;
                 return;
             }
 
-            float mouseX = inputManager.Look.x;
-            float mouseY = inputManager.Look.y;
+           // float mouseX = inputManager.Look.x;
+           // float mouseY = inputManager.Look.y;
 
             cameraHolder.position = cameraRoot.position;
 
-            xRotation -= mouseY * mouseSens * Time.smoothDeltaTime;
+           // xRotation -= mouseY * mouseSens * Time.smoothDeltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
             cameraHolder.localRotation = Quaternion.Euler(xRotation, 0, 0);
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * mouseSens * Time.smoothDeltaTime, 0));
+           // rb.MoveRotation(rb.rotation * Quaternion.Euler(0, mouseX * mouseSens * Time.smoothDeltaTime, 0));
         }
 
         private void Crouch()
         {
             if (animator != null)
             {
-                animator.SetBool(crouchHash, inputManager.Crouch);
+                //animator.SetBool(crouchHash, inputManager.Crouch);
 
             }
         }
@@ -164,10 +165,10 @@ using Walker2.Manager;
         private void Jump()
         {
 
-            if (!hasAnimator || !inputManager.Jump)
-            {
-                return;
-            }
+           // if (!hasAnimator || !inputManager.Jump)
+           // {
+          //      return;
+          //  }
 
             if (grounded && isReadyToJump)
             {
@@ -187,7 +188,7 @@ using Walker2.Manager;
         public void JumpAddForce()
         {
             rb.velocity = Vector3.zero;
-            rb.velocity = new Vector3(rb.velocity.x, jumpFactor * StaticData.jumpBuffMult, rb.velocity.z);
+          //  rb.velocity = new Vector3(rb.velocity.x, jumpFactor * StaticData.jumpBuffMult, rb.velocity.z);
             animator.ResetTrigger(jumpHash);
         }
 

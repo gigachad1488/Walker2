@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using Walker2.Controller;
 
 [RequireComponent(typeof(Collider))]
 public class EnemyAggroCheck : MonoBehaviour

@@ -21001,7 +21001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimationBlendSpeed: 4
-  mouseSens: 25
+  mouseSens: 10
   cameraRoot: {fileID: 185687768931726393}
   cameraHolder: {fileID: 9056819384369884855}
   upperLimit: -90
@@ -24003,6 +24003,22 @@ MonoBehaviour:
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
   - m_Transform: {fileID: 4638182395638908924}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
+  - m_Transform: {fileID: 2881594790407074959}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
+  - m_Transform: {fileID: 2881594790407074959}
     m_Style:
       shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
       color: {r: 1, g: 0, b: 0, a: 0.5}
@@ -34449,7 +34465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 906082154454965155}
-  abilityPrefab: {fileID: 3730910799229142101, guid: 082cdaf7422a28f47b6c6336fae73e52,
+  abilityPrefab: {fileID: 3671057138427286847, guid: 13a6a565433811a4ba28aae176c8fb33,
     type: 3}
   abilityHand: {fileID: 1729278370691826061}
   uiCanvas: {fileID: 6221067999621259562}
@@ -36863,7 +36879,7 @@ MonoBehaviour:
   gunParent: {fileID: 8588676565198259136}
   recoil: {fileID: 8886326349803118918}
   guns:
-  - {fileID: 11400000, guid: 49e3a7d412f86aa4499e4286f3e116d5, type: 2}
+  - {fileID: 11400000, guid: 1942c3d7f523c00479d1c92157dbe332, type: 2}
   - {fileID: 11400000, guid: 682731059f88fa94c92198acd4920e3a, type: 2}
   activeGun: {fileID: 0}
   activeGunTransform: {fileID: 0}
@@ -39060,7 +39076,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 36078ab0369161e49a29d349ae3e0739, type: 3}
   m_Controller: {fileID: 9100000, guid: 7b11e65eaa85ead43bb01634f46d62ba, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
